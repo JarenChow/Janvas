@@ -24,10 +24,81 @@
       ctx = canvas.getContext("2d", {alpha: true, desynchronized: false}),
       stg = new Setting(ctx);
 
+    // 简单写一下：面向对象复用原型，节省内存
+    function Node(id, x, y, label) {
+      this._defaultRadius = 1;
+      this._show = true;
+      this._highlight = false;
+      this.arc = new FixedArc(ctx, 0, 0, this._defaultRadius);
+      this.arc.getStyle().setFillStyle("#C6E5FF").setStrokeStyle("#5B8FF9").setLineWidth(0.3);
+      this.mat = this.arc.mat.setOffset(x, y);
+      this.text = new Text(ctx, x + this._defaultRadius + 1, y, label || id, x + this._defaultRadius + 1, y);
+      this.text.getStyle().setFont("1.5px sans-serif").setTextAlign("left").setTextBaseline("middle");
+    }
+
+    Node.prototype = {
+      setXY: function (x, y) {
+        this.mat.setOffset(x, y);
+        this.text.sx = this.text.cx = x + (this._defaultRadius + 1) * scale;
+        this.text.sy = this.text.cy = y;
+      },
+      inScreen: function () {
+        var x = this.mat.getOffsetX(), y = this.mat.getOffsetY();
+        return x > 0 && x < width && y > 0 && y < height;
+      },
+      draw: function () {
+        if (this.inScreen()) this.arc.fillStroke();
+        // if (show) text.fill();
+      },
+      getX: function () {
+        return this.mat.getOffsetX();
+      },
+      getY: function () {
+        return this.mat.getOffsetY();
+      },
+      mark: function () {
+        this.lastX = this.mat.getOffsetX();
+        this.lastY = this.mat.getOffsetY();
+      },
+      drag: function (moveX, moveY) {
+        this.setXY(this.lastX + moveX, this.lastY + moveY, 1);
+      },
+      wheel: function (x, y, scaling, scale) {
+        this.setXY(x + (this.mat.getOffsetX() - x) * scaling, y + (this.mat.getOffsetY() - y) * scaling, scale);
+        this.mat.setScale(scale, scale);
+        this.text.getMatrix().setScale(scale, scale);
+      },
+      hide: function () {
+        this._show = false;
+      },
+      show: function () {
+        this._show = true;
+      },
+      isPointInPath: function (x, y) {
+        if (!this.inScreen()) return false;
+        return this.arc.isPointInPath(x, y);
+      },
+      highlight: function (flag) {
+        if (flag) {
+          this.arc.getStyle().setFillStyle("#FF0000").setStrokeStyle("#000000").setLineWidth(1);
+          this._highlight = true;
+        } else {
+          this.arc.getStyle().setFillStyle("#C6E5FF").setStrokeStyle("#5B8FF9").setLineWidth(0.3);
+          this._highlight = false;
+        }
+      },
+      isHighlight: function () {
+        return this._highlight;
+      },
+      getLabel: function () {
+        return this.text.getText();
+      }
+    };
+
     // 以闭包的方式由工厂函数创建对象
     var factory = {
       nodesMap: new Map(),
-      // 创建节点对象，由 Arc 和 Text 组成（大数据量时 Text 不绘制）
+      // 使用闭包方式，创建节点对象，由 Arc 和 Text 组成（大数据量时 Text 不绘制）
       createNode: function (id, x, y, label) {
         var defaultRadius = 1;
         var arc = new FixedArc(ctx, 0, 0, defaultRadius);
@@ -103,7 +174,13 @@
         this.nodesMap.set(id, node);
         return node;
       },
-      // 创建连线对象，仅由 Line 组成
+      // 使用面向对象的方式创建节点对象
+      newNode: function (id, x, y, label) {
+        var node = new Node(id, x, y, label);
+        this.nodesMap.set(id, node);
+        return node;
+      },
+      // 使用必包方式，创建连线对象，仅由 Line 组成
       createEdge: function (source, target) {
         var sourceNode = this.nodesMap.get(source), targetNode = this.nodesMap.get(target);
         if (sourceNode === void (0) || targetNode === void (0)) return;
@@ -317,7 +394,8 @@
         nodes.length = edges.length = 0;
         // 节点数据进来，使用工厂模式循环创建节点与连线对象
         data.nodes.forEach(function (node) {
-          nodes.push(factory.createNode(node.id, node.x, node.y, node.olabel));
+          // nodes.push(factory.createNode(node.id, node.x, node.y, node.olabel));
+          nodes.push(factory.newNode(node.id, node.x, node.y, node.olabel)); // 使用面向对象方式生成 Node，复用原型方法，节省内存
         });
         data.edges.forEach(function (edge) {
           edge = factory.createEdge(edge.source, edge.target);

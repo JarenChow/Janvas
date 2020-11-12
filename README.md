@@ -12,6 +12,10 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 而使用 [janvas](./dist/janvas.min.js) 从低抽象角度来定制，数据量即使达到 **50000\+** 时，依然可以**缩放**、**拖曳**以及**自定义更多交互**。[点击打开示例](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)。
 
+#### 绘制太极图
+
+太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个图形组成。使用**闭包**（或**面向对象**）方式组装好后，向外暴露三个方法：init 重置位置，draw 用于绘制，rotate 来旋转，可轻松绘制一个跟随鼠标移动的旋转**太极图**。[点击打开示例](https://jarenchow.github.io/Janvas/examples/taiji.html)。
+
 ## [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
 
 ```html
