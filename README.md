@@ -6,11 +6,11 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 #### Example001
 
-原示例：[https://g6.antv.vision/zh/examples/performance/perf#moreData](https://g6.antv.vision/zh/examples/performance/perf#moreData)，如图所说：
+原示例：[https://g6.antv.vision/zh/examples/performance/perf#moreData](https://g6.antv.vision/zh/examples/performance/perf#moreData)，如其所说：
 
 ![image-20201112115239209](https://cdn.jsdelivr.net/gh/JarenChow/ImageHosting@master/image/janvas/image-20201112115239209.png)
 
-而使用 [janvas](./janvas.min.js)，数据量即使达到 **50000\+** 时，依然可以**缩放拖曳**以及**自定义更多交互**，[点击打开示例](./example001.html)。
+而使用 [janvas](./janvas.min.js)，数据量即使达到 **50000\+** 时，依然可以**缩放拖曳**以及**自定义更多交互**，[点击打开示例](https://jarenchow.github.io/Janvas/example001.html)。
 
 ## 开始
 
