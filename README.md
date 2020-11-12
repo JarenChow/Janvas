@@ -12,7 +12,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 而使用 [janvas](./dist/janvas.min.js) 从低抽象角度来定制，数据量即使达到 **50000\+** 时，依然可以**缩放**、**拖曳**以及**自定义更多交互**。[点击打开示例](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)。
 
-## Hello World
+## [Hello World](./examples/hello_world.html)
 
 ```html
 <body>

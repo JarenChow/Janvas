@@ -24,8 +24,10 @@
       ctx = canvas.getContext("2d", {alpha: true, desynchronized: false}),
       stg = new Setting(ctx);
 
+    // 以闭包的方式由工厂函数创建对象
     var factory = {
       nodesMap: new Map(),
+      // 创建节点对象，由 Arc 和 Text 组成（大数据量时 Text 不绘制）
       createNode: function (id, x, y, label) {
         var defaultRadius = 1;
         var arc = new FixedArc(ctx, 0, 0, defaultRadius);
@@ -101,6 +103,7 @@
         this.nodesMap.set(id, node);
         return node;
       },
+      // 创建连线对象，仅由 Line 组成
       createEdge: function (source, target) {
         var sourceNode = this.nodesMap.get(source), targetNode = this.nodesMap.get(target);
         if (sourceNode === void (0) || targetNode === void (0)) return;
@@ -128,6 +131,7 @@
           }
         }
       },
+      // 创建提示框对象
       createHint: function () {
         var roundRect = new RoundRect(ctx, 0, 0, 0, 0);
         roundRect.getStyle().setFillStyle("white").setStrokeStyle("white");
@@ -167,10 +171,13 @@
       }
     };
 
+    // 需要绘制的节点对象列表
     var nodes = [];
 
+    // 需要绘制的连线对象列表
     var edges = [];
 
+    // 提示框
     var hint = factory.createHint();
 
     resize();
@@ -297,7 +304,18 @@
 
     return {
       data: function (data) {
+        // 每次进来数据时进行重置与闭包清理
+        scale = 1;
+        nodes.forEach(function (node) {
+          for (var key in node) node[key] = null;
+          node = null;
+        });
+        edges.forEach(function (edge) {
+          for (var key in edge) edge[key] = null;
+          edge = null;
+        });
         nodes.length = edges.length = 0;
+        // 节点数据进来，使用工厂模式循环创建节点与连线对象
         data.nodes.forEach(function (node) {
           nodes.push(factory.createNode(node.id, node.x, node.y, node.olabel));
         });
