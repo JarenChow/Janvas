@@ -84,7 +84,7 @@
     }).start();
 
     addEventListener("mousemove", function (ev) {
-      taiji.init(ev.offsetX, ev.offsetY);
+      if (ev.buttons) taiji.init(ev.offsetX, ev.offsetY);
     });
 
     return {};

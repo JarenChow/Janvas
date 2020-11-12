@@ -10,11 +10,15 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 > 对 G6 的性能测试，用来验证 G6 能够承载的数据量，分别使用 5000+ 图元、将近 20000 图元及 50000+ 图元的示例进行了测试，从结果来看，20000 左右图元时，G6 是可以正常交互的，当数据量达到 50000+ 时，交互就会出现一定的卡顿，但对于绝大部分业务来说，都不建议在画布上展示如此多的数据，具体的做法可以参考 AntV G6 团队的大图可视化方案，预计 1122 发布
 
-而使用 [janvas](./dist/janvas.min.js) 从低抽象角度来定制，数据量即使达到 **50000\+** 时，依然可以**缩放**、**拖曳**以及**自定义更多交互**。[点击打开示例](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)。
+而使用 [janvas](./dist/janvas.min.js) 从低抽象角度来定制，数据量即使达到 **50000\+** 时，依然可以**缩放**、**拖曳**以及**自定义更多交互**。
+
+[点击打开示例](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)。
 
 #### 绘制太极图
 
-太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个图形组成。使用**闭包**（或**面向对象**）方式组装好后，向外暴露三个方法：init 重置位置，draw 用于绘制，rotate 来旋转，可轻松绘制一个跟随鼠标移动的旋转**太极图**。[点击打开示例](https://jarenchow.github.io/Janvas/examples/taiji.html)。
+太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个图形组成。使用**闭包**（或**面向对象**）方式组装好后，向外暴露三个方法：init 重置位置，draw 用于绘制，rotate 来旋转，可轻松绘制一个跟随鼠标移动的旋转**太极图**。
+
+[点击打开示例](https://jarenchow.github.io/Janvas/examples/taiji.html)。
 
 ## [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
 
