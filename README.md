@@ -2,9 +2,11 @@
 
 A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
+一款轻量、简单的 2d JavaScript 绘图库，基于 HTML5 Canvas 2d 绘图上下文，摒弃了之前的闭包模块化模式的开发，避免了冗余的无法释放的资源，选择使用寄生组合式继承，完全面向对象方式开发，最大程度的代码复用，同时便于拓展且不再大量入侵全局作用域，目前仅向外提供一个 **janvas** 接口，而 **janvas** 中的所有内容都可单独使用。
+
 ## 示例
 
-#### [About AntV Performance Test](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)
+### [About AntV Performance Test](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)
 
 原示例：[https://g6.antv.vision/zh/examples/performance/perf#moreData](https://g6.antv.vision/zh/examples/performance/perf#moreData)，如其所说：
 
@@ -12,13 +14,13 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 而使用 [janvas](./dist/janvas.min.js) 从低抽象角度来定制，数据量即使达到 **50000\+** 时，依然可以**缩放**、**拖曳**以及**自定义更多交互**。
 
-#### [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
+### [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
 
-#### [绘制太极图](https://jarenchow.github.io/Janvas/examples/taichi.html)
+### [绘制太极图](https://jarenchow.github.io/Janvas/examples/taichi.html)
 
-太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个圆形组成，不到两百行代码构建太极屏保。
+太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个圆形组成，不到两百行代码构建太极屏保，包含旋转、渐变、碰撞检测等。
 
-#### [SVG 支持，绘制老虎](https://jarenchow.github.io/Janvas/examples/tiger.html)
+### [SVG 支持，绘制老虎](https://jarenchow.github.io/Janvas/examples/tiger.html)
 
 ## 源代码
 
@@ -114,4 +116,4 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 特殊说明
 
-摒弃之前的闭包模块化模式的开发，避免了冗余的无法释放的资源，使用完全面向对象方式的开发，最大程度的代码复用，同时便于拓展且不再大量入侵全局作用域，目前仅会提供一个 janvas 接口，唯一受影响的是为了便于进行样式的判断，会在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。
+为了便于进行样式的判断，**janvas** 在绘制的过程中会在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。
