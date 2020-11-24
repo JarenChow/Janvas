@@ -15,405 +15,291 @@
 </head>
 <body>
 
-<canvas style="width: 928px;height: 530px;"></canvas>
+<div id="app" style="width: 800px;height: 500px;"></div>
 
 <script src="../dist/janvas.min.js"></script>
 <script>
-  var antV = function (canvas) {
-    var width = canvas.offsetWidth, height = canvas.offsetHeight,
-      ctx = canvas.getContext("2d", {alpha: true, desynchronized: false}),
-      stg = new Setting(ctx);
-
-    // 简单写一下：面向对象复用原型，节省内存
-    function Node(id, x, y, label) {
-      this._defaultRadius = 1;
-      this._show = true;
-      this._highlight = false;
-      this.arc = new FixedArc(ctx, 0, 0, this._defaultRadius);
-      this.arc.getStyle().setFillStyle("#C6E5FF").setStrokeStyle("#5B8FF9").setLineWidth(0.3);
-      this.mat = this.arc.mat.setOffset(x, y);
-      this.text = new Text(ctx, x + this._defaultRadius + 1, y, label || id, x + this._defaultRadius + 1, y);
-      this.text.getStyle().setFont("1.5px sans-serif").setTextAlign("left").setTextBaseline("middle");
-    }
-
-    Node.prototype = {
-      setXY: function (x, y) {
-        this.mat.setOffset(x, y);
-        this.text.sx = this.text.cx = x + (this._defaultRadius + 1) * scale;
-        this.text.sy = this.text.cy = y;
-      },
-      inScreen: function () {
-        var x = this.mat.getOffsetX(), y = this.mat.getOffsetY();
-        return x > 0 && x < width && y > 0 && y < height;
-      },
-      draw: function () {
-        if (this.inScreen()) this.arc.fillStroke();
-        // if (show) text.fill();
-      },
-      getX: function () {
-        return this.mat.getOffsetX();
-      },
-      getY: function () {
-        return this.mat.getOffsetY();
-      },
-      mark: function () {
-        this.lastX = this.mat.getOffsetX();
-        this.lastY = this.mat.getOffsetY();
-      },
-      drag: function (moveX, moveY) {
-        this.setXY(this.lastX + moveX, this.lastY + moveY, 1);
-      },
-      wheel: function (x, y, scaling, scale) {
-        this.setXY(x + (this.mat.getOffsetX() - x) * scaling, y + (this.mat.getOffsetY() - y) * scaling, scale);
-        this.mat.setScale(scale, scale);
-        this.text.getMatrix().setScale(scale, scale);
-      },
-      hide: function () {
-        this._show = false;
-      },
-      show: function () {
-        this._show = true;
-      },
-      isPointInPath: function (x, y) {
-        if (!this.inScreen()) return false;
-        return this.arc.isPointInPath(x, y);
-      },
-      highlight: function (flag) {
-        if (flag) {
-          this.arc.getStyle().setFillStyle("#FF0000").setStrokeStyle("#000000").setLineWidth(1);
-          this._highlight = true;
-        } else {
-          this.arc.getStyle().setFillStyle("#C6E5FF").setStrokeStyle("#5B8FF9").setLineWidth(0.3);
-          this._highlight = false;
-        }
-      },
-      isHighlight: function () {
-        return this._highlight;
-      },
-      getLabel: function () {
-        return this.text.getText();
-      }
-    };
-
-    // 以闭包的方式由工厂函数创建对象
-    var factory = {
-      nodesMap: new Map(),
-      // 使用闭包方式，创建节点对象，由 Arc 和 Text 组成（大数据量时 Text 不绘制）
-      createNode: function (id, x, y, label) {
-        var defaultRadius = 1;
-        var arc = new FixedArc(ctx, 0, 0, defaultRadius);
-        arc.getStyle().setFillStyle("#C6E5FF").setStrokeStyle("#5B8FF9").setLineWidth(0.3);
-        var mat = arc.getMatrix();
-        mat.setOffset(x, y);
-        var text = new Text(ctx, x + defaultRadius + 1, y, label || id, x + defaultRadius + 1, y);
-        text.getStyle().setFont("1.5px sans-serif").setTextAlign("left").setTextBaseline("middle");
-
-        function setXY(x, y) {
-          mat.setOffset(x, y);
-          text.sx = text.cx = x + (defaultRadius + 1) * scale;
-          text.sy = text.cy = y;
+  var next = new janvas.Canvas({
+    el: "#app",
+    components: {
+      factory: function () {
+        function Node(ctx, id, x, y, label) {
+          this._defaultRadius = 1;
+          this._scale = 1;
+          this._showText = false;
+          this.arc = new janvas.FixedArc(ctx, 0, 0, this._defaultRadius);
+          this._arc = new janvas.FixedRect(ctx,
+            -this._defaultRadius, -this._defaultRadius,
+            this._defaultRadius * 2, this._defaultRadius * 2);
+          this._arc.setMatrix(this.arc.getMatrix());
+          this._arc.setStyle(this.arc.getStyle());
+          this.text = new janvas.Text(ctx, 0, 0, label || id);
+          this.text.getStyle().setFont("1.5px sans-serif")
+            .setTextAlign("left").setTextBaseline("middle");
+          this.setXY(x, y);
+          this.highlight(false);
+          this.draw = this.fillStroke;
         }
 
-        function inScreen() {
-          var x = mat.getOffsetX(), y = mat.getOffsetY();
-          return x > 0 && x < width && y > 0 && y < height;
-        }
-
-        var show = true;
-        var highlight = false;
-
-        var node = {
-          draw: function () {
-            if (inScreen()) arc.fillStroke();
-            // if (show) text.fill();
+        Node.prototype = {
+          setXY: function (x, y) {
+            this.arc.getMatrix().setOffset(this.x = x, this.y = y);
+            this.text.init(x + this._defaultRadius * this._scale * 2, y,
+              x + this._defaultRadius * this._scale * 2, y);
           },
           getX: function () {
-            return mat.getOffsetX();
+            return this.x;
           },
           getY: function () {
-            return mat.getOffsetY();
-          },
-          mark: function () {
-            this.lastX = mat.getOffsetX();
-            this.lastY = mat.getOffsetY();
-          },
-          drag: function (moveX, moveY) {
-            setXY(this.lastX + moveX, this.lastY + moveY, 1);
-          },
-          wheel: function (x, y, scaling, scale) {
-            setXY(x + (mat.getOffsetX() - x) * scaling, y + (mat.getOffsetY() - y) * scaling, scale);
-            mat.setScale(scale, scale);
-            text.getMatrix().setScale(scale, scale);
-          },
-          hide: function () {
-            show = false;
-          },
-          show: function () {
-            show = true;
-          },
-          isPointInPath: function (x, y) {
-            if (!inScreen()) return false;
-            return arc.isPointInPath(x, y);
-          },
-          highlight: function (flag) {
-            if (flag) {
-              arc.getStyle().setFillStyle("#FF0000").setStrokeStyle("#000000").setLineWidth(1);
-              highlight = true;
-            } else {
-              arc.getStyle().setFillStyle("#C6E5FF").setStrokeStyle("#5B8FF9").setLineWidth(0.3);
-              highlight = false;
-            }
-          },
-          isHighlight: function () {
-            return highlight;
+            return this.y;
           },
           getLabel: function () {
-            return text.getText();
+            return this.text.getText();
+          },
+          setScale: function (scale) {
+            this._scale = scale;
+            this.arc.getMatrix().setScale(scale, scale);
+            this.text.getMatrix().setScale(scale, scale);
+          },
+          fillStroke: function () {
+            this.arc.fillStroke();
+            // if (this._showText) this.text.fill();
+          },
+          onlyFill: function () {
+            this._arc.fill();
+          },
+          in: function (bg) {
+            return janvas.Collision.rect(
+              this.x - this._defaultRadius * this._scale,
+              this.y - this._defaultRadius * this._scale,
+              this.x + this._defaultRadius * this._scale,
+              this.y + this._defaultRadius * this._scale,
+              bg.sx, bg.sy, bg.sw, bg.sh);
+          },
+          isPointInPath: function (x, y) {
+            return this._arc.isPointInPath(x, y);
+          },
+          highlight: function (flag) {
+            if (flag) this.arc.getStyle().setFillStyle("#FF0000")
+              .setStrokeStyle("#000000").setLineWidth(1);
+            else this.arc.getStyle().setFillStyle("#C6E5FF")
+              .setStrokeStyle("#5B8FF9").setLineWidth(0.3);
+          },
+          showText: function (flag) {
+            this._showText = flag;
+          },
+          mark: function () {
+            this.lastX = this.x;
+            this.lastY = this.y;
+          },
+          drag: function (moveX, moveY) {
+            this.setXY(this.lastX + moveX, this.lastY + moveY);
+          },
+          wheel: function (x, y, scaling, scale) {
+            this.setScale(scale);
+            this.setXY(x + (this.x - x) * scaling, y + (this.y - y) * scaling);
+            this.draw = scale * this._defaultRadius < 1 ? this.onlyFill : this.fillStroke;
           }
         };
-        this.nodesMap.set(id, node);
-        return node;
-      },
-      // 使用面向对象的方式创建节点对象
-      newNode: function (id, x, y, label) {
-        var node = new Node(id, x, y, label);
-        this.nodesMap.set(id, node);
-        return node;
-      },
-      // 使用必包方式，创建连线对象，仅由 Line 组成
-      createEdge: function (source, target) {
-        var sourceNode = this.nodesMap.get(source), targetNode = this.nodesMap.get(target);
-        if (sourceNode === void (0) || targetNode === void (0)) return;
-        var line = new Line(ctx, sourceNode.getX(), sourceNode.getY(), targetNode.getX(), targetNode.getY());
-        line.getStyle().setStrokeStyle("#333333").setLineWidth(0.1);
+        janvas.Utils.defineConstructor(Node);
 
-        var show = true;
+        function Edge(ctx, source, target) {
+          this._show = true;
+          this.source = source;
+          this.target = target;
+          this.line = new janvas.Line(ctx, 0, 0, 0, 0);
+          this.line.getStyle().setStrokeStyle("#333333").setLineWidth(0.1);
+          this.refresh();
+        }
 
-        return {
+        Edge.prototype = {
           draw: function () {
-            if (show) line.stroke();
+            if (this._show) this.line.stroke();
           },
           refresh: function () {
-            line.initXY(sourceNode.getX(), sourceNode.getY())
-              .setEndX(targetNode.getX()).setEndY(targetNode.getY());
+            this.line.initXY(this.source.getX(), this.source.getY())
+              .setEndX(this.target.getX()).setEndY(this.target.getY());
           },
-          lineWidth: function (scale) {
-            line.getStyle().setLineWidth(scale / 10);
+          setLineWidth: function (scale) {
+            this.line.getStyle().setLineWidth(scale / 10);
           },
-          hide: function () {
-            show = false;
-          },
-          show: function () {
-            show = true;
-          }
-        }
-      },
-      // 创建提示框对象
-      createHint: function () {
-        var roundRect = new RoundRect(ctx, 0, 0, 0, 0);
-        roundRect.getStyle().setFillStyle("white").setStrokeStyle("white");
-        var text = new Text(ctx, 0, 0, "");
-        text.getStyle().setFont("12px sans-serif").setTextAlign("left").setTextBaseline("bottom");
-
-        var shadow = new ShadowStyle().setShadowBlur(20).setShadowColor("grey");
-
-        var show = false;
-
-        var of = 3, pdl = 5, pdt = 3; // offset, paddingLeft, paddingTop
-
-        return {
-          draw: function () {
-            if (show) {
-              stg.setShadowStyles(shadow);
-              roundRect.fill().stroke();
-              stg.resetShadowStyles();
-              text.fill();
-            }
-          },
-          init: function (x, y, label) {
-            x += of;
-            y -= of;
-            text.setText(label);
-            var metrics = Utils.measureText(label, text.getStyle().getFont());
-            text.initXY(x + pdl, y - pdt);
-            roundRect.initXY(x, y).setWidth(metrics.width + pdl * 2).setHeight(-(metrics.height + pdt * 2)).setRadius();
-          },
-          hide: function () {
-            show = false;
-          },
-          show: function () {
-            show = true;
+          show: function (flag) {
+            this._show = flag;
           }
         };
-      }
-    };
+        janvas.Utils.defineConstructor(Edge);
 
-    // 需要绘制的节点对象列表
-    var nodes = [];
+        function Hint(ctx, stg) {
+          this._show = false;
+          this._of = this._pdt = 3; // offset, paddingLeft, paddingTop
+          this._pdl = 5;
+          this.stg = stg;
+          this.roundRect = new janvas.RoundRect(ctx, 0, 0, 0, 0);
+          this.roundRect.getStyle().setFillStyle("white").setStrokeStyle("white");
+          this.text = new janvas.Text(ctx, 0, 0, "");
+          this.text.getStyle().setFont("12px sans-serif")
+            .setTextAlign("left").setTextBaseline("bottom");
+          this.shadow = new janvas.ShadowStyle().setShadowBlur(20).setShadowColor("grey");
+        }
 
-    // 需要绘制的连线对象列表
-    var edges = [];
-
-    // 提示框
-    var hint = factory.createHint();
-
-    resize();
-
-    function resize() {
-      canvas.width = width = canvas.offsetWidth;
-      canvas.height = height = canvas.offsetHeight;
-      stg.initCurrentStyles();
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-      edges.forEach(function (edge) {
-        edge.draw();
-      });
-      nodes.forEach(function (node) {
-        node.draw();
-      });
-      hint.draw();
-    }
-
-    var x, y, lastX, lastY, moveX, moveY;
-    var current, mousein;
-
-    function mousedown(ev) {
-      lastX = x = ev.offsetX;
-      lastY = y = ev.offsetY;
-      nodes.forEach(function (node) {
-        node.mark();
-        node.hide();
-      });
-      if (current === void (0)) {
-        edges.forEach(function (edge) {
-          edge.hide();
-        });
-      }
-      draw();
-    }
-
-    function mousemove(ev) {
-      x = ev.offsetX;
-      y = ev.offsetY;
-      moveX = x - lastX;
-      moveY = y - lastY;
-      switch (ev.buttons) {
-        case 0:
-          mousein = true;
-          nodes.forEach(function (node) {
-            if (node.isPointInPath(x, y)) {
-              current = node;
-              mousein = false;
+        Hint.prototype = {
+          draw: function () {
+            if (this._show) {
+              this.stg.setShadowStyles(this.shadow);
+              this.roundRect.fillStroke();
+              this.stg.resetShadowStyles();
+              this.text.fill();
             }
-          });
-          nodes.forEach(function (node) {
-            if (node.isHighlight()) {
-              node.highlight(false);
-            }
-          });
-          if (mousein) {
-            current = void (0);
-            hint.hide();
-          } else {
-            current.highlight(true);
-            hint.show();
-            hint.init(x, y, current.getLabel());
+          },
+          setXY: function (x, y) {
+            x += this._of;
+            y -= this._of;
+            this.text.initXY(x + this._pdl, y - this._pdt);
+            this.roundRect.initXY(x, y).setWidth(this._textWidth + this._pdl * 2)
+              .setHeight(-(this._textHeight + this._pdt * 2)).setRadius();
+          },
+          setLabel: function (label) {
+            if (this.label === label) return;
+            this.label = label;
+            this.text.setText(label);
+            var metrics = janvas.Utils.measureText(label, this.text.getStyle().getFont());
+            this._textWidth = metrics.width;
+            this._textHeight = metrics.height;
+          },
+          show: function (flag) {
+            this._show = flag;
           }
-          break;
-        case 1:
-          if (current) {
-            current.drag(moveX, moveY);
+        };
+
+        return {
+          nodesMap: new Map(),
+          newNode: function (id, x, y, label) {
+            var node = new Node(this.$.ctx, id, x, y, label);
+            this.nodesMap.set(id, node);
+            return node;
+          },
+          newEdge: function (source, target) {
+            source = this.nodesMap.get(source);
+            target = this.nodesMap.get(target);
+            return source && target ? new Edge(this.$.ctx, source, target) : void (0);
+          },
+          newHint: function () {
+            return new Hint(this.$.ctx, this.$.stg);
+          }
+        };
+      }()
+    },
+    methods: {
+      init: function () {
+        this.nodes = [];
+        this.edges = [];
+        this.hint = this.factory.newHint();
+      },
+      draw: function () {
+        this.background.clear(0, 0, this.width, this.height);
+        this.edges.forEach(function (edge) {
+          edge.draw();
+        });
+        this.nodes.forEach(function (node) {
+          if (node.in(this.background)) node.draw();
+        }, this);
+        this.hint.draw();
+      },
+      data: function (res) {
+        this.nodes.length = this.edges.length = 0;
+        res.nodes.forEach(function (node) {
+          this.nodes.push(this.factory.newNode(node.id,
+            node.x, node.y, node.olabel));
+        }, this);
+        res.edges.forEach(function (edge) {
+          edge = this.factory.newEdge(edge.source, edge.target);
+          if (edge) this.edges.push(edge);
+        }, this);
+        this.draw();
+      },
+      resize: function () {
+        janvas.Canvas.prototype.resize.call(this);
+        this.background = new janvas.FixedRect(this.ctx,
+          0, 0, this.width, this.height);
+        this.draw();
+      }
+    },
+    events: {
+      eventdown: function () {
+        this.eventmove();
+        this._eventdown = true;
+        this.nodes.forEach(function (node) {
+          node.mark();
+        });
+        if (this._current === void (0)) {
+          this.edges.forEach(function (edge) {
+            edge.show(false);
+          });
+        }
+        this.draw();
+      },
+      eventmove: function () {
+        if (this._eventdown) {
+          if (this._current === void (0)) {
+            this.nodes.forEach(function (node) {
+              node.drag(this.moveX, this.moveY);
+            }, this);
           } else {
-            nodes.forEach(function (node) {
-              node.drag(moveX, moveY);
+            this._current.drag(this.moveX, this.moveY);
+            this.hint.setXY(this.x, this.y);
+            this.edges.forEach(function (edge) {
+              edge.refresh();
             });
           }
-          edges.forEach(function (edge) {
-            edge.refresh();
-          });
-          break;
+          this.draw();
+        } else {
+          var mousein = true;
+          this.nodes.forEach(function (node) {
+            if (node.in(this.background)
+              && node.isPointInPath(this.x, this.y)) {
+              this._current = node;
+              mousein = false;
+            }
+            node.highlight(false);
+          }, this);
+          if (mousein) {
+            this._current = void (0);
+            this.hint.show(false);
+          } else {
+            this._current.highlight(true);
+            this.hint.setLabel(this._current.getLabel());
+            this.hint.setXY(this.x, this.y);
+            this.hint.show(true);
+          }
+          this.draw();
+        }
+      },
+      eventup: function () {
+        this._eventdown = false;
+        this.edges.forEach(function (edge) {
+          edge.show(true);
+          edge.refresh();
+        });
+        this.draw();
+      },
+      wheel: function () {
+        this.nodes.forEach(function (node) {
+          node.wheel(this.x, this.y, this.scaling, this.scale)
+        }, this);
+        this.edges.forEach(function (edge) {
+          edge.refresh();
+          edge.setLineWidth(this.scale);
+        }, this);
+        this.draw();
       }
-      draw();
     }
-
-    function mouseup(ev) {
-      x = ev.offsetX;
-      y = ev.offsetY;
-      nodes.forEach(function (node) {
-        node.show();
-      });
-      edges.forEach(function (edge) {
-        edge.show();
-      });
-      draw();
-    }
-
-    var scale = 1, lastScale, scaling;
-
-    function wheel(ev) {
-      x = ev.offsetX;
-      y = ev.offsetY;
-      lastScale = scale;
-      scale += 0.5 * (ev.deltaY > 0 ? -1 : 1);
-      scale = Math.min(Math.max(0.5, scale), 8);
-      scaling = scale / lastScale;
-      nodes.forEach(function (node) {
-        node.wheel(x, y, scaling, scale);
-        node.mark();
-      });
-      edges.forEach(function (edge) {
-        edge.refresh();
-        edge.lineWidth(scale);
-      });
-      lastX = x;
-      lastY = y;
-      draw();
-    }
-
-    canvas.addEventListener("mousedown", mousedown);
-    canvas.addEventListener("mousemove", mousemove);
-    canvas.addEventListener("mouseup", mouseup);
-    canvas.addEventListener("mouseout", mouseup);
-    canvas.addEventListener("wheel", wheel);
-    addEventListener("resize", resize);
-
-    return {
-      data: function (data) {
-        // 每次进来数据时进行重置与闭包清理
-        scale = 1;
-        nodes.forEach(function (node) {
-          for (var key in node) node[key] = null;
-          node = null;
-        });
-        edges.forEach(function (edge) {
-          for (var key in edge) edge[key] = null;
-          edge = null;
-        });
-        nodes.length = edges.length = 0;
-        // 节点数据进来，使用工厂模式循环创建节点与连线对象
-        data.nodes.forEach(function (node) {
-          // nodes.push(factory.createNode(node.id, node.x, node.y, node.olabel));
-          nodes.push(factory.newNode(node.id, node.x, node.y, node.olabel)); // 使用面向对象方式生成 Node，复用原型方法，节省内存
-        });
-        data.edges.forEach(function (edge) {
-          edge = factory.createEdge(edge.source, edge.target);
-          if (edge) edges.push(edge);
-        });
-        draw();
-      }
-    };
-  };
-
-  var antv = antV(document.querySelector("canvas"));
-
+  });
   // 原示例：https://g6.antv.vision/zh/examples/performance/perf#moreData
   fetch("https://gw.alipayobjects.com/os/bmw-prod/f1565312-d537-4231-adf5-81cb1cd3a0e8.json")
     .then(function (res) {
       return res.json();
-    }).then(function (data) {
-    antv.data(data);
+    }).then(function (res) {
+    next.data(res);
   });
 </script>
 

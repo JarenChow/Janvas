@@ -4,7 +4,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 示例
 
-#### About AntV Performance Test
+#### [About AntV Performance Test](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)
 
 原示例：[https://g6.antv.vision/zh/examples/performance/perf#moreData](https://g6.antv.vision/zh/examples/performance/perf#moreData)，如其所说：
 
@@ -12,42 +12,13 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 而使用 [janvas](./dist/janvas.min.js) 从低抽象角度来定制，数据量即使达到 **50000\+** 时，依然可以**缩放**、**拖曳**以及**自定义更多交互**。
 
-[点击打开示例](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)。
+#### [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
 
-#### 绘制太极图
+#### [绘制太极图](https://jarenchow.github.io/Janvas/examples/taichi.html)
 
-太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个图形组成。使用**闭包**（或**面向对象**）方式组装好后，向外暴露三个方法：init 重置位置，draw 用于绘制，rotate 来旋转，可轻松绘制一个跟随鼠标移动的旋转**太极图**。
+太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个圆形组成，不到两百行代码构建太极屏保。
 
-[点击打开示例](https://jarenchow.github.io/Janvas/examples/taiji.html)。
-
-## [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
-
-```html
-<body>
-
-<canvas style="width: 100%;height:100%"></canvas>
-
-<script src="janvas.min.js"></script>
-<script>
-  // Your code here.
-  var helloWorld = function (canvas) {
-    var ctx = canvas.getContext("2d"),
-      width = canvas.width = canvas.offsetWidth,
-      height = canvas.height = canvas.offsetHeight;
-
-    var text = new Text(ctx, width / 2, height / 2, "Hello World");
-    text.getStyle().setFont("96px sans-serif")
-      .setTextAlign("center").setTextBaseline("middle");
-    text.fill();
-
-    return {};
-  }
-
-  var closure = helloWorld(document.querySelector("canvas"));
-</script>
-
-</body>
-```
+#### [SVG 支持，绘制老虎](https://jarenchow.github.io/Janvas/examples/tiger.html)
 
 ## 源代码
 
@@ -57,11 +28,21 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ### Utils
 
-### Rgb&Hsl
+### Rgb
+
+### Hsl
 
 ### Matrix
 
-### Style
+### FillStrokeStyle
+
+### TextStyle
+
+### ShapeStyle
+
+### ShadowStyle
+
+### OtherStyle
 
 ### Point
 
@@ -73,13 +54,64 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ### Animate
 
+### AnimateITV
+
+### AnimateRAF
+
+### BasicShape
+
 ### Shape
+
+### Rect
+
+### RoundRect
+
+### ImageShape
+
+### Arc
+
+### Sector
+
+### Ellipse
+
+### Line
+
+### BezierLine
+
+### ArrowHead
+
+### Arrow
+
+### RegularPolygon
+
+### RegularStar
+
+### Text
 
 ### DotShape
 
+### Polyline
+
+### Bezier
+
+### Polygon
+
+### PolyRect
+
+### PolyArc
+
+### SmoothLine
+
+### Dots
+
 ### FixedShape
+
+### FixedRect
+
+### FixedArc
+
+### Canvas
 
 ## 特殊说明
 
-库中的几十个类，会直接入侵全局作用域。
-
+摒弃之前的闭包模块化模式的开发，避免了冗余的无法释放的资源，使用完全面向对象方式的开发，最大程度的代码复用，同时便于拓展且不再大量入侵全局作用域，目前仅会提供一个 janvas 接口，唯一受影响的是为了便于进行样式的判断，会在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。

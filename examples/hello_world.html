@@ -15,25 +15,30 @@
 </head>
 <body>
 
-<canvas style="width: 100%;height:100%"></canvas>
+<div id="app" style="width: 100%;height: 100%;"></div>
 
 <script src="../dist/janvas.min.js"></script>
 <script>
   // Your code here.
-  var helloWorld = function (canvas) {
-    var ctx = canvas.getContext("2d"),
-      width = canvas.width = canvas.offsetWidth,
-      height = canvas.height = canvas.offsetHeight;
-
-    var text = new Text(ctx, width / 2, height / 2, "Hello World");
-    text.getStyle().setFont("96px sans-serif")
-      .setTextAlign("center").setTextBaseline("middle");
-    text.fill();
-
-    return {};
-  }
-
-  var closure = helloWorld(document.querySelector("canvas"));
+  var helloWorld = new janvas.Canvas({
+    el: "#app",
+    methods: {
+      init: function () {
+        this.text = new janvas.Text(this.ctx, 0, 0, "Hello World");
+        this.text.getStyle().setFont("128px sans-serif")
+          .setTextAlign("center").setTextBaseline("middle");
+      },
+      draw: function () {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.text.fill();
+      },
+      resize: function () {
+        janvas.Canvas.prototype.resize.call(this);
+        this.text.initXY(this.width / 2, this.height / 2);
+        this.draw();
+      }
+    }
+  });
 </script>
 
 </body>
