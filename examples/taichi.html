@@ -152,7 +152,6 @@
               rect.getStartX(), rect.getStartY(), rect.getWidth(), rect.getHeight());
           }
         };
-        janvas.Utils.defineConstructor(Taichi);
 
         return {
           createTaichi: function (x, y, r) {
@@ -163,7 +162,7 @@
     },
     methods: {
       init: function () {
-        this.background = new janvas.Rect(this.ctx, 0, 0, 0, 0);
+        this.background = new janvas.Rect(this.ctx, 0, 0, this.width, this.height);
         this.raf.start();
       },
       update: function (ts) {
@@ -190,10 +189,6 @@
         this.taichi.forEach(function (tc) {
           tc.draw();
         });
-      },
-      resize: function () {
-        janvas.Canvas.prototype.resize.call(this);
-        this.background.setWidth(this.width).setHeight(this.height);
       }
     },
     events: {
@@ -203,6 +198,9 @@
       visibility: function (hidden) {
         if (hidden) this.raf.pause();
         else this.raf.resume();
+      },
+      resize: function () {
+        this.background.setWidth(this.width).setHeight(this.height);
       }
     },
     functions: {

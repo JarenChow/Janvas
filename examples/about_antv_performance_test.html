@@ -19,7 +19,7 @@
 
 <script src="../dist/janvas.min.js"></script>
 <script>
-  var next = new janvas.Canvas({
+  var antv = new janvas.Canvas({
     el: "#app",
     components: {
       factory: function () {
@@ -101,7 +101,6 @@
             this.draw = scale * this._defaultRadius < 1 ? this.onlyFill : this.fillStroke;
           }
         };
-        janvas.Utils.defineConstructor(Node);
 
         function Edge(ctx, source, target) {
           this._show = true;
@@ -127,7 +126,6 @@
             this._show = flag;
           }
         };
-        janvas.Utils.defineConstructor(Edge);
 
         function Hint(ctx, stg) {
           this._show = false;
@@ -194,6 +192,8 @@
         this.nodes = [];
         this.edges = [];
         this.hint = this.factory.newHint();
+        this.background = new janvas.FixedRect(this.ctx,
+          0, 0, this.width, this.height);
       },
       draw: function () {
         this.background.clear(0, 0, this.width, this.height);
@@ -215,12 +215,6 @@
           edge = this.factory.newEdge(edge.source, edge.target);
           if (edge) this.edges.push(edge);
         }, this);
-        this.draw();
-      },
-      resize: function () {
-        janvas.Canvas.prototype.resize.call(this);
-        this.background = new janvas.FixedRect(this.ctx,
-          0, 0, this.width, this.height);
         this.draw();
       }
     },

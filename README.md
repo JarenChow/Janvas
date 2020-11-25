@@ -16,15 +16,40 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ### [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
 
+```html
+<body>
+
+<div id="app" style="width: 100%;height: 100%;"></div>
+
+<script src="../dist/janvas.min.js"></script>
+<script>
+  // Your code here.
+  var helloWorld = new janvas.Canvas({
+    el: "#app",
+    methods: {
+      init: function () {
+        var text = new janvas.Text(this.ctx, this.width / 2, this.height / 2, "Hello World");
+        text.getStyle().setFont("128px sans-serif").setTextAlign("center").setTextBaseline("middle");
+        text.fill();
+      }
+    }
+  });
+</script>
+
+</body>
+```
+
 ### [绘制太极图](https://jarenchow.github.io/Janvas/examples/taichi.html)
 
 太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个圆形组成，不到两百行代码构建太极屏保，包含旋转、渐变、碰撞检测等。
 
 ### [SVG 支持，绘制老虎](https://jarenchow.github.io/Janvas/examples/tiger.html)
 
+依据 svg 数据生成的组合图形仍然具有范围检测、样式自定义及矩阵变形的功能。
+
 ## 源代码
 
-...
+[janvas.min.js](./dist/janvas.min.js) 仅使用 [uglifyjs](https://github.com/mishoo/UglifyJS) --compress 简单压缩无任何混淆。
 
 ## 文档
 
