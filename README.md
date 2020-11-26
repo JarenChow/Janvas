@@ -25,7 +25,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 <script>
   // Your code here.
   var helloWorld = new janvas.Canvas({
-    el: "#app",
+    container: "#app",
     methods: {
       init: function () {
         var text = new janvas.Text(this.ctx, this.width / 2, this.height / 2, "Hello World");
