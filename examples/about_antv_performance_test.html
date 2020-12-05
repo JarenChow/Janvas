@@ -22,7 +22,7 @@
   var antv = new janvas.Canvas({
     container: "#app",
     components: {
-      factory: function () {
+      factory: (function () {
         function Node(ctx, id, x, y, label) {
           this._defaultRadius = 1;
           this._scale = 1;
@@ -185,7 +185,7 @@
             return new Hint(this.$.ctx, this.$.stg);
           }
         };
-      }()
+      }())
     },
     methods: {
       init: function () {

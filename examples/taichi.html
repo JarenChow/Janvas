@@ -28,7 +28,7 @@
       taichi: []
     },
     components: {
-      factory: function () {
+      factory: (function () {
         function Taichi(ctx, interval, x, y, r) {
           var outer = new janvas.Arc(ctx, x, y, r);
           outer.getStyle().setLineWidth(r / 8);
@@ -158,7 +158,7 @@
             return new Taichi(this.$.ctx, this.$.interval, x, y, r);
           }
         };
-      }()
+      }())
     },
     methods: {
       init: function () {

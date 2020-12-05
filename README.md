@@ -4,7 +4,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 一款轻量、简单的 2d JavaScript 绘图库，基于 HTML5 Canvas 2d 绘图上下文，摒弃了之前的闭包模块化模式的开发，避免了冗余的无法释放的资源，选择使用寄生组合式继承，完全面向对象方式开发，最大程度的代码复用，同时便于拓展且不再大量入侵全局作用域，目前仅向外提供一个 **janvas** 接口，而 **janvas** 中的所有内容都可单独使用。
 
-## 示例
+## Janvas 示例
 
 ### [About AntV Performance Test](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)
 
@@ -46,6 +46,26 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 ### [SVG 支持，绘制老虎](https://jarenchow.github.io/Janvas/examples/tiger.html)
 
 依据 svg 数据生成的组合图形仍然具有范围检测、样式自定义及矩阵变形的功能。
+
+### [百行代码，绘制时钟](https://jarenchow.github.io/Janvas/examples/clock.html)
+
+秒针使用了 janvas 中自带的高阶贝塞尔曲线实现动画，阴影偏移量随时间偏移。
+
+<video id="video" controls="" preload="none">
+    <source id="mp4" src="https://cdn.jsdelivr.net/gh/JarenChow/ImageHosting@master/image/janvas/clock.mp4" type="video/mp4">
+</video>
+
+### [贝塞尔生成器](https://jarenchow.github.io/Janvas/examples/beziermaker.html)
+
+- 鼠标点击生成一个数据点
+- 鼠标右键拖曳所有数据点
+- 响应键盘 wasd/方向键
+- 响应键盘 Delete 删除数据点
+- 响应 Enter 从控制台打印原始数据点与计算后的数据点
+
+### [FlyDots](https://jarenchow.github.io/Janvas/examples/flydots.html)
+
+使用 janvas 简单轻松绘制的不算特效的特效。
 
 ## 源代码
 
