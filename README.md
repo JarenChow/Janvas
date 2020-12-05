@@ -16,6 +16,12 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ### [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
 
+简单三步开发 Canvas
+
+1. `<div id="app" style="width: 100%;height: 100%;"></div>`
+2. `<script src="janvas.min.js"></script>`
+3. `Hello World 代码如下`
+
 ```html
 <body>
 
@@ -25,9 +31,9 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 <script>
   // Your code here.
   var helloWorld = new janvas.Canvas({
-    container: "#app",
+    container: "#app", // janvas 会在后台自动将画布适应容器大小
     methods: {
-      init: function () {
+      init: function () { // 同时会生成 ctx, width, height 属性，使用 this 调用
         var text = new janvas.Text(this.ctx, this.width / 2, this.height / 2, "Hello World");
         text.getStyle().setFont("128px sans-serif").setTextAlign("center").setTextBaseline("middle");
         text.fill();
@@ -51,9 +57,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 秒针使用了 janvas 中自带的高阶贝塞尔曲线实现动画，阴影偏移量随时间偏移。
 
-<video id="video" controls="" preload="none">
-    <source id="mp4" src="https://cdn.jsdelivr.net/gh/JarenChow/ImageHosting@master/image/janvas/clock.mp4" type="video/mp4">
-</video>
+![image-20200316105934566](https://cdn.jsdelivr.net/gh/JarenChow/ImageHosting@master/image/janvas/clock.gif)
 
 ### [贝塞尔生成器](https://jarenchow.github.io/Janvas/examples/beziermaker.html)
 
