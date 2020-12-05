@@ -1,0 +1,170 @@
+<!--https://github.com/JarenChow/Janvas Created by JarenChow in 2020-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clock</title>
+  <style type="text/css">
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app" style="width: 100%;height: 100%;"></div>
+
+<script src="../dist/janvas.min.js"></script>
+<script>
+  var clock = new janvas.Canvas({
+    container: "#app",
+    methods: {
+      init: function () {
+        var bezier = new janvas.Bezier(this.ctx, 0, 0, [0, 0, 100, 1300, 200, -100, 300, 700, 400, 500, 500, 500]);
+        bezier.getMatrix().setScale(1 / 500, 1 / 500);
+        this.animation = bezier.setTransform().getActualPoints().filter(function () {
+          return arguments[1] % 2 === 1;
+        });
+        this.background = new janvas.Rect(this.ctx); // 背景
+        this.bottom = new janvas.RoundRect(this.ctx); // 时钟底
+        this.outer = new janvas.Arc(this.ctx); // 主圆
+        this.inner = new janvas.Arc(this.ctx); // 内圆
+        this.second = new janvas.RoundRect(this.ctx);
+        this.minute = new janvas.RoundRect(this.ctx);
+        this.hour = new janvas.RoundRect(this.ctx);
+        this.dot = new janvas.Arc(this.ctx);
+        this.resize();
+        this.visibility(true);
+      },
+      initStyles: function () {
+        this.shadow = new janvas.ShadowStyle().setShadowBlur(5).setShadowColor("hsla(0, 0%, 0%, 0.8)");
+        this.shadow.basis = new janvas.Point(20, 0); // this.width / 96
+        this.shadow.cursor = new janvas.Point();
+        this.background.getStyle().setFillStyle("hsl(223, 6%, 46%)"); // 背景
+        this.gradient("hsl(0, 0%, 100%)", "hsl(0, 0%, 80%)",
+          this.bottom, this.minute, this.hour, this.dot);
+        this.dot.getStyle().setStrokeStyle("hsl(0, 0%, 50%)");
+        this.gradient("hsl(0, 80%, 70%)", "hsl(0, 80%, 50%)", this.second);
+        this.gradient("hsl(0, 0%, 0%)", "hsl(0, 0%, 50%)", this.outer);
+        this.gradient("hsl(0, 0%, 30%)", "hsl(0, 0%, 20%)", this.inner);
+      },
+      update: function (ts) {
+        ts += this.milliseconds;
+        if (ts > this._secondIncrement * 1000) {
+          this._secondIncrement++;
+          if (++this.seconds % 60 === 0) {
+            this.seconds = 0;
+            if (++this.minutes % 60 === 0) {
+              this.minutes = 0;
+              if (++this.hours % 24 === 0) this.hours = 0;
+            }
+          }
+          this._allSeconds++; // 维护一个总秒数，避免重复操作 hours/minutes/seconds
+          this.setAngle();
+          this.onEvent(this.hours, this.minutes, this.seconds);
+        } else if (ts % 1000 > 600) { // 动画间隔为 400，动画效果为五阶贝塞尔曲线
+          this.second.getMatrix().setAngle(this._secondLastAngle
+            + Math.PI / 30 // secondIncrementAngle: 1/60*2PI
+            * this.animation[Math.floor((ts % 1000 - 600) / 400 * this.animation.length)]);
+        }
+      },
+      draw: function () {
+        this.background.fill();
+        this.stg.setShadowStyles(this.shadow);
+        this.bottom.fill();
+        this.outer.fill();
+        this.stg.resetShadowStyles();
+        this.inner.fill();
+        this.stg.setShadowStyles(this.shadow);
+        this.hour.fill();
+        this.minute.fill();
+        this.second.fill();
+        this.dot.fill();
+        this.stg.resetShadowStyles();
+        this.dot.stroke();
+      }
+    },
+    events: {
+      resize: function () {
+        var goldenRatio = 0.809,
+          size = Math.min(this.width, this.height) * goldenRatio,
+          cx = this.width / 2, cy = this.height / 2;
+        this._sizeBy2 = size / 2;
+        this.background.initXY(0, 0).setWidth(this.width).setHeight(this.height);
+        this.bottom.init(cx - this._sizeBy2, cy - this._sizeBy2, cx, cy)
+          .setWidth(size).setHeight(size).setRadius(size / 4);
+        this.outer.initXY(cx, cy).setRadius(size * goldenRatio / 2);
+        this.inner.initXY(cx, cy).setRadius(this.outer.getRadius() * goldenRatio);
+        var offset = this.inner.getRadius() * Math.pow(goldenRatio, 18);
+        this.second.init(cx - offset, cy - offset, cx, cy)
+          .setWidth(this.inner.getRadius() * goldenRatio + offset)
+          .setHeight(offset * 2).setRadius(offset);
+        offset /= Math.pow(goldenRatio, 2);
+        this.minute.init(cx - offset, cy - offset, cx, cy)
+          .setWidth(this.inner.getRadius() * Math.pow(goldenRatio, 2) + offset)
+          .setHeight(offset * 2).setRadius(offset);
+        offset /= Math.pow(goldenRatio, 2);
+        this.hour.init(cx - offset, cy - offset, cx, cy)
+          .setWidth(this.inner.getRadius() * Math.pow(goldenRatio, 4) + offset)
+          .setHeight(offset * 2).setRadius(offset);
+        this.dot.initXY(cx, cy).setRadius(offset / Math.pow(goldenRatio, 2));
+        this.initStyles();
+      },
+      visibility: function (visible) {
+        if (visible) {
+          this.resetTime();
+          this.raf.start();
+        } else {
+          this.raf.stop();
+        }
+      },
+      onEvent: janvas.Utils.noop
+    },
+    functions: {
+      gradient: function (start, stop) {
+        var grd = janvas.Utils.createLinearGradient(-this._sizeBy2, -this._sizeBy2,
+          this._sizeBy2, this._sizeBy2, arguments[2]);
+        grd.addColorStop(0, start);
+        grd.addColorStop(1, stop);
+        for (var i = 2; i < arguments.length; i++) arguments[i].getStyle().setFillStyle(grd);
+      },
+      resetTime: function () {
+        var date = new Date();
+        this.hours = date.getHours();
+        this.minutes = date.getMinutes();
+        this.seconds = date.getSeconds();
+        this.milliseconds = date.getMilliseconds();
+        this._allSeconds = this.hours * 3600 + this.minutes * 60 + this.seconds;
+        this._secondIncrement = 1;
+        this.setAngle();
+      },
+      setAngle: function () {
+        this.hour.getMatrix().setAngle(this._allSeconds / 3600 / 12 * Math.PI * 2 - Math.PI / 2);
+        this.minute.getMatrix().setAngle(this._allSeconds / 60 / 60 * Math.PI * 2 - Math.PI / 2);
+        this.second.getMatrix().setAngle(this._allSeconds / 60 * Math.PI * 2 - Math.PI / 2);
+        this._secondLastAngle = this.second.getMatrix().getAngle();
+        if (this.hours === 5) {
+          if (this.minutes >= 45) this.shadow.cursor.copy(this.shadow.basis).scaleX(this._allSeconds % 900 / 900);
+        } else if (this.hours >= 6 && this.hours < 18) { // 设置 shadow 随时间变化的“角度”
+          this.shadow.cursor.copy(this.shadow.basis).rotate((this._allSeconds - 6 * 3600) / (12 * 3600) * Math.PI);
+        } else if (this.hours === 18) {
+          if (this.minutes < 15) this.shadow.cursor.copy(this.shadow.basis).inverseX().scaleX(1 - this._allSeconds % 900 / 900);
+        }
+        this.shadow.setShadowOffsetX(this.shadow.cursor.getX()).setShadowOffsetY(this.shadow.cursor.getY());
+      }
+    }
+  });
+  clock.onEvent = function (hours, minutes, seconds) {
+    console.log(pad(hours) + ":" + pad(minutes) + ":" + pad(seconds));
+
+    function pad(num) {
+      return num < 10 ? "0" + num : "" + num
+    }
+  };
+</script>
+
+</body>
+</html>
