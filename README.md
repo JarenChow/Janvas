@@ -21,7 +21,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 ## Janvas 的特点
 
 1. 每个 **janvas** 子模块都能单独使用，无需整个项目都使用全新规则开发；
-2. 每个 **janvas** 的形状对象均含有 sx, sy, cx, cy 属性，表示 startX/startY/centerX/centerY，并：
+2. 每个 **janvas** 的形状对象均含有绘制坐标与中心点坐标，且均：
     - 内置一个用于变形的矩阵 Matrix，可轻松错切\(*skew*\)、缩放\(*scale*\)、旋转\(*angle*\)、平移\(*offset*\)；
     - 内置一个用于自动应用样式的 Style；
 3. **janvas** 库处理变形的方式仅使用 ctx.transform\(matrix\)，从不使用 ctx.scale/ctx.rotate/ctx.translate 等耗时方法，从不在无须变形的时候应用矩阵；
@@ -49,7 +49,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
   4. `var text = new janvas.Text(ctx, 50, 50, "Hello World");`
   5. `text.fill();`
 
-- 使用全新 janvas.Canvas 开发
+- 使用 janvas.Canvas 开发
 
 ```html
 <body>
@@ -58,11 +58,10 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 <script src="../dist/janvas.min.js"></script>
 <script>
-  // Your code here.
   var helloWorld = new janvas.Canvas({
     container: "#app", // janvas 会在后台自动将画布适应容器大小
-    methods: {
-      init: function () { // 同时会生成 ctx, width, height 属性，使用 this 调用
+    methods: { // 同时会生成 ctx, width, height 属性，使用 this 调用
+      init: function () { // 为控件添加名为 init 的初始化方法
         var text = new janvas.Text(this.ctx, this.width / 2, this.height / 2, "Hello World");
         text.getStyle().setFont("128px sans-serif").setTextAlign("center").setTextBaseline("middle");
         text.fill();
