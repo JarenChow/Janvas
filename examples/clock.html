@@ -23,7 +23,7 @@
     container: "#app",
     methods: {
       init: function () {
-        var bezier = new janvas.Bezier(this.ctx, 0, 0, [0, 0, 100, 1300, 200, -100, 300, 700, 400, 500, 500, 500]);
+        var bezier = new janvas.Bezier(this.ctx, 0, 0, [0, 0, 100, 1457, 200, -460, 300, 989, 400, 405, 500, 500]);
         bezier.getMatrix().setScale(1 / 500, 1 / 500);
         this.animation = bezier.setTransform().getActualPoints().filter(function () {
           return arguments[1] % 2 === 1;
@@ -65,10 +65,10 @@
           this._allSeconds++; // 维护一个总秒数，避免重复操作 hours/minutes/seconds
           this.setAngle();
           this.onEvent(this.hours, this.minutes, this.seconds);
-        } else if (ts % 1000 > 600) { // 动画间隔为 400，动画效果为五阶贝塞尔曲线
+        } else if (ts % 1000 > 700) { // 动画间隔为 400，动画效果为五阶贝塞尔曲线
           this.second.getMatrix().setAngle(this._secondLastAngle
             + Math.PI / 30 // secondIncrementAngle: 1/60*2PI
-            * this.animation[Math.floor((ts % 1000 - 600) / 400 * this.animation.length)]);
+            * this.animation[Math.floor((ts % 1000 - 700) / 300 * this.animation.length)]);
         }
       },
       draw: function () {

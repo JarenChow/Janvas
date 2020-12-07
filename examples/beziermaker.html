@@ -119,11 +119,9 @@
           this.dots.forEach(function (dot) {
             dot.mark();
           });
-        } else { // 默认行为
+        } else { // 非右键，默认行为
           if (this.current) {
-            this.locked.highlight(false);
-            this.locked = this.current;
-            this.locked.highlight(true);
+            this.toggleLocked(this.current);
           } else {
             if (this.locked) this.locked.highlight(false);
             this.dots.push(this.locked = this.current = this.factory.newDot(this.x, this.y));
@@ -142,7 +140,7 @@
         } else if (ev.buttons === 1) { // 鼠标左键
           this.locked.onmove(this.moveX, this.moveY);
           this.polyline.update(this.locked.getX(), this.locked.getY(), this.locked.getIndex());
-        } else { // 默认行为
+        } else { // 无按键，默认行为
           if (this.current) this.current.highlight(false);
           this.current = void (0);
           this.dots.forEach(function (dot) {
@@ -198,8 +196,24 @@
             console.log("SOURCEDOTS: " + this.polyline.getActualPoints().toString());
             console.log("CALCULATED: " + this.bezier.getActualPoints().toString());
             break;
+          case "q":
+            this.toggleLocked(this.dots[this.locked.getIndex() - 1] || this.dots[this.dots.length - 1]);
+            break;
+          case "e":
+            this.toggleLocked(this.dots[this.locked.getIndex() + 1] || this.dots[0]);
+            break;
         }
         this.draw();
+      },
+      resize: function () {
+        this.draw();
+      }
+    },
+    functions: {
+      toggleLocked: function (dot) {
+        this.locked.highlight(false);
+        this.locked = dot;
+        this.locked.highlight(true);
       }
     }
   });

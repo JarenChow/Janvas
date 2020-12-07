@@ -2,7 +2,11 @@
 
 A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
-一款轻量、简单的 2d JavaScript 绘图库，基于 HTML5 Canvas 2d 绘图上下文，摒弃了之前的闭包模块化模式的开发，避免了冗余的无法释放的资源，选择使用寄生组合式继承，完全面向对象方式开发，最大程度的代码复用，同时便于拓展且不再大量入侵全局作用域，目前仅向外提供一个 **janvas** 接口，而 **janvas** 中的所有内容都可单独使用。
+一款轻量、简单的 2d JavaScript 绘图库，基于 HTML5 Canvas 2d 绘图上下文，使用寄生组合式继承，完全面向对象方式开发，不仅便于 *拓展*，拥有极佳的 *灵活度*，更是 *渐进迭代式* 开发的绝佳选择。
+
+这意味着 **janvas** 从不强迫开发者遵循太多固定的概念或规则，概念或规则可由开发者根据应用的方向而定。
+
+同时也表示 **janvas** 中的所有内容都可单独使用，并且不存在过多的配置，还你一个书写原生 JavaScript 的体验。
 
 ## Janvas 目前能做
 
@@ -13,6 +17,18 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 5. 数学可视化
 6. 游戏
 7. 其他 janvas 能做的都能做（笑
+
+## Janvas 的特点
+
+1. 每个 **janvas** 子模块都能单独使用，无需整个项目都使用全新规则开发；
+2. 每个 **janvas** 的形状对象均含有 sx, sy, cx, cy 属性，表示 startX/startY/centerX/centerY，并：
+    - 内置一个用于变形的矩阵 Matrix，可轻松错切\(*skew*\)、缩放\(*scale*\)、旋转\(*angle*\)、平移\(*offset*\)；
+    - 内置一个用于自动应用样式的 Style；
+3. **janvas** 库处理变形的方式仅使用 ctx.transform\(matrix\)，从不使用 ctx.scale/ctx.rotate/ctx.translate 等耗时方法，从不在无须变形的时候应用矩阵；
+4. **janvas** 库处理样式的方式从不使用 ctx.save\(\)/ctx.restore\(\)，且从不在无须更改样式的时候应用导致影响性能；
+5. **janvas** 的所有内置图形使用寄生组合式继承构建层级关系，如 DotShape 继承于 Shape 继承于 BasicShape；
+6. 如果说 BasicShape 处理好了矩阵，Shape 处理好了样式，那么 DotShape 就处理好了图形中的所有点的位置，可以轻松获取 DotShape 的数据点，并且 DotShape 内置 “缓存”，仅在数据发生改变的时候才会自动应用变化。
+
 
 ## Janvas 示例
 
@@ -26,11 +42,14 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ### [Hello World](https://jarenchow.github.io/Janvas/examples/hello_world.html)
 
-简单三步开发 Canvas
+- 与既有 Canvas 项目整合
+  1. `<canvas></canvas>`
+  2. `<script src="janvas.min.js"></script>`
+  3. `var ctx = document.querySelector("canvas").getContext("2d");`
+  4. `var text = new janvas.Text(ctx, 50, 50, "Hello World");`
+  5. `text.fill();`
 
-1. `<div id="app" style="width: 100%;height: 100%;"></div>`
-2. `<script src="janvas.min.js"></script>`
-3. `Hello World 代码如下`
+- 使用全新 janvas.Canvas 开发
 
 ```html
 <body>
@@ -182,3 +201,7 @@ janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了�
 ## 特殊说明
 
 为了便于进行样式的判断，**janvas** 在绘制的过程中会在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
