@@ -92,8 +92,9 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 - 鼠标点击生成一个数据点
 - 鼠标右键拖曳所有数据点
-- 响应键盘 wasd/方向键
-- 响应键盘 Delete 删除数据点
+- 响应键盘 wasd/方向键 控制节点位置
+- 响应键盘 q/e 切换当前节点
+- 响应键盘 Delete 删除节点
 - 响应 Enter 从控制台打印原始数据点与计算后的数据点
 
 ### [FlyDots](https://jarenchow.github.io/Janvas/examples/flydots.html)
