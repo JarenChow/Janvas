@@ -36,8 +36,8 @@
           this._x = janvas.Utils.randInt(this._left, this._right, true);
           this._y = janvas.Utils.randInt(this._top, this._bottom, true);
           this._r = 3;
-          this._vx = janvas.Utils.randSign() * janvas.Utils.randInt(10, 100, true) / 100;
-          this._vy = janvas.Utils.randSign() * janvas.Utils.randInt(10, 100, true) / 100;
+          this._lvx = this._vx = janvas.Utils.randSign() * janvas.Utils.randInt(10, 100, true) / 100;
+          this._lvy = this._vy = janvas.Utils.randSign() * janvas.Utils.randInt(10, 100, true) / 100;
           this._relateStart = [];
           this._relateEnd = [];
           this.arc = new janvas.Arc(ctx, this._x, this._y, this._r);
@@ -51,10 +51,6 @@
             this.arc.initXY(x, y);
             this._relateStart.forEach(this.startCallback, this);
             this._relateEnd.forEach(this.endCallBack, this);
-          },
-          mark: function () {
-            this._lvx = this._vx;
-            this._lvy = this._vy;
           },
           closer: function (x, y) {
             this._vx = (x - this._x) / Math.abs(x - this._x);
@@ -154,7 +150,6 @@
     events: {
       eventdown: function () {
         this.dots.forEach(function (dot) {
-          dot.mark();
           dot.closer(this.x, this.y);
         }, this);
       },
@@ -162,7 +157,7 @@
         this.cursor.initXY(this.x, this.y);
       },
       eventup: function (ev) {
-        if (ev.type !== "mouseout") this.dots.forEach(function (dot) {
+        this.dots.forEach(function (dot) {
           dot.restore();
         });
       }
