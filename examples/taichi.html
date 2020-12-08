@@ -29,7 +29,7 @@
     },
     components: {
       factory: (function () {
-        function Taichi(ctx, interval, x, y, r) {
+        function Taichi(ctx, x, y, r) {
           var outer = new janvas.Arc(ctx, x, y, r);
           outer.getStyle().setLineWidth(r / 8);
           var left = new janvas.Arc(ctx, x, y, r, Math.PI / 2, -Math.PI / 2, false, x, y);
@@ -44,7 +44,7 @@
           this.x = x;
           this.y = y;
           this.r = r;
-          this.rotateSpeed = janvas.Utils.randSign() * Math.PI / 2000 * interval * 42 / r;
+          this.rotateSpeed = janvas.Utils.randSign() * Math.PI / 2000 * 16.67 * 42 / r;
           this.cp = new janvas.Point();
           this.outer = outer;
           this.left = left;
@@ -59,7 +59,7 @@
             black: new janvas.Rgb(0, 0, 0).sRgbInverseCompanding(),
             white: new janvas.Rgb(255, 255, 255).sRgbInverseCompanding(),
             lambda: 0,
-            lambdaMax: Math.ceil(1000 / interval)
+            lambdaMax: Math.ceil(1000 / 16.67)
           };
         }
 
@@ -155,7 +155,7 @@
 
         return {
           createTaichi: function (x, y, r) {
-            return new Taichi(this.$.ctx, this.$.interval, x, y, r);
+            return new Taichi(this.$ctx, x, y, r);
           }
         };
       }())
@@ -194,10 +194,11 @@
     events: {
       eventdown: function () {
         this.add(this.x, this.y);
+        console.log(this);
       },
-      visibility: function (hidden) {
-        if (hidden) this.raf.pause();
-        else this.raf.resume();
+      visibility: function (visible) {
+        if (visible) this.raf.resume();
+        else this.raf.pause();
       },
       resize: function () {
         this.background.setWidth(this.width).setHeight(this.height);

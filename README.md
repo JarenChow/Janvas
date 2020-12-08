@@ -29,7 +29,6 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 5. **janvas** 的所有内置图形使用寄生组合式继承构建层级关系，如 DotShape 继承于 Shape 继承于 BasicShape；
 6. 如果说 BasicShape 处理好了矩阵，Shape 处理好了样式，那么 DotShape 就处理好了图形中的所有点的位置，可以轻松获取 DotShape 的数据点，并且 DotShape 内置 “缓存”，仅在数据发生改变的时候才会自动应用变化。
 
-
 ## Janvas 示例
 
 ### [About AntV Performance Test](https://jarenchow.github.io/Janvas/examples/about_antv_performance_test.html)
@@ -73,21 +72,21 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 </body>
 ```
 
-### [绘制太极图](https://jarenchow.github.io/Janvas/examples/taichi.html)
+### [TaiChi](https://jarenchow.github.io/Janvas/examples/taichi.html)
 
 太极图可由外圆，左半圆，右半圆，上下中小圆，一共 **7** 个圆形组成，不到两百行代码构建太极屏保，包含旋转、渐变、碰撞检测等。
 
-### [SVG 支持，绘制老虎](https://jarenchow.github.io/Janvas/examples/tiger.html)
+### [SVG Support](https://jarenchow.github.io/Janvas/examples/tiger.html)
 
 依据 svg 数据生成的组合图形仍然具有范围检测、样式自定义及矩阵变形的功能。
 
-### [百行代码，绘制时钟](https://jarenchow.github.io/Janvas/examples/clock.html)
+### [Clock](https://jarenchow.github.io/Janvas/examples/clock.html)
 
 秒针使用了 **janvas** 中自带的高阶贝塞尔曲线实现动画，阴影偏移量随时间偏移。
 
-![image-20200316105934566](https://cdn.jsdelivr.net/gh/JarenChow/ImageHosting@master/image/janvas/clock.gif)
+[![image-20200316105934566](https://cdn.jsdelivr.net/gh/JarenChow/ImageHosting@master/image/janvas/clock.gif)](https://jarenchow.github.io/Janvas/examples/clock.html)
 
-### [贝塞尔生成器](https://jarenchow.github.io/Janvas/examples/beziermaker.html)
+### [BezierMaker](https://jarenchow.github.io/Janvas/examples/beziermaker.html)
 
 - 鼠标点击生成一个数据点
 - 鼠标右键拖曳所有数据点
@@ -197,6 +196,10 @@ janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了�
 ### FixedArc
 
 ### Canvas
+
+...
+
+挂载在 janvas.Canvas 上的 components，如 `factory: (function () {...}())` 为封闭作用域下的立即执行方法，返回一个挂载了 $ctx 和 $stg 的工厂对象，这意味着组件是完全可以在不同的 janvas.Canvas 框架下复用的。
 
 ## 特殊说明
 

@@ -89,7 +89,7 @@
         return {
           _index: 0,
           newDot: function (x, y) {
-            return new Dot(this.$.ctx, x, y, this._index++);
+            return new Dot(this.$ctx, x, y, this._index++);
           },
           decreaseAutoIndex: function () {
             this._index--;

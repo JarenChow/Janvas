@@ -172,17 +172,17 @@
         return {
           nodesMap: new Map(),
           newNode: function (id, x, y, label) {
-            var node = new Node(this.$.ctx, id, x, y, label);
+            var node = new Node(this.$ctx, id, x, y, label);
             this.nodesMap.set(id, node);
             return node;
           },
           newEdge: function (source, target) {
             source = this.nodesMap.get(source);
             target = this.nodesMap.get(target);
-            return source && target ? new Edge(this.$.ctx, source, target) : void (0);
+            return source && target ? new Edge(this.$ctx, source, target) : void (0);
           },
           newHint: function () {
-            return new Hint(this.$.ctx, this.$.stg);
+            return new Hint(this.$ctx, this.$stg);
           }
         };
       }())
