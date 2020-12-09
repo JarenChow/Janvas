@@ -41,21 +41,22 @@
         this.visibility(true);
       },
       initStyles: function () {
-        this.shadow = new janvas.ShadowStyle().setShadowBlur(5)
+        var min = Math.min(this.width, this.height);
+        this.shadow = new janvas.ShadowStyle().setShadowBlur(min / 140)
           .setShadowColor("hsla(0, 0%, 0%, 0.8)");
-        this.shadow.basis = new janvas.Point(20, 0); // this.width / 96
+        this.shadow.basis = new janvas.Point(min / 35, 0); // this.width / 96
         this.shadow.cursor = new janvas.Point();
         this.background.getStyle().setFillStyle("hsl(0, 0%, 63%)"); // 背景
         this.gradient("hsl(0, 0%, 100%)", "hsl(0, 0%, 90%)",
           this.bottom, this.minute, this.hour, this.dot);
-        this.bottom.border.getStyle().setLineWidth(20);
-        this.bottom.shadow = new janvas.ShadowStyle().setShadowBlur(15)
+        this.bottom.border.getStyle().setLineWidth(min / 35);
+        this.bottom.shadow = new janvas.ShadowStyle().setShadowBlur(min / 140 * 3)
           .setShadowColor("hsla(0, 0%, 0%, 0.5)").setShadowOffsetX(-this.width);
         this.dot.getStyle().setStrokeStyle("hsl(0, 0%, 63%)");
         this.gradient("hsl(0, 80%, 70%)", "hsl(0, 80%, 50%)", this.second);
         this.gradient("hsl(0, 0%, 40%)", "hsl(0, 0%, 23%)", this.outer);
-        this.outer.border.getStyle().setLineWidth(20);
-        this.outer.shadow = new janvas.ShadowStyle().setShadowBlur(10)
+        this.outer.border.getStyle().setLineWidth(min / 35);
+        this.outer.shadow = new janvas.ShadowStyle().setShadowBlur(min / 70)
           .setShadowColor("hsla(0, 0%, 0%, 0.5)").setShadowOffsetX(-this.width);
       },
       update: function (ts) {
