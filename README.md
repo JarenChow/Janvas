@@ -99,6 +99,16 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 使用 **janvas** 简单轻松绘制的不算特效的特效。
 
+### [AboutWheel](https://jarenchow.github.io/Janvas/examples/about_wheel.html)
+
+缩放公式：target = event + (source - event) * scale / lastScale;
+
+在 **janvas** 中读取一张 SVG 图片，并随时间旋转，随鼠标响应范围检测并拖曳，随滚轮实现无损缩放的示例。
+
+### [AboutEdge](https://jarenchow.github.io/Janvas/examples/about_edge.html)
+
+v2.1.0 新增绘制连线的 Edge 类，实现了图数据库中的连线的样式。
+
 ## 源代码
 
 [janvas.min.js](./dist/janvas.min.js) 仅使用 [uglifyjs](https://github.com/mishoo/UglifyJS) --compress 简单压缩无任何混淆。
@@ -163,6 +173,8 @@ janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了�
 
 ### BezierLine
 
+### Edge
+
 ### ArrowHead
 
 ### Arrow
@@ -199,11 +211,11 @@ janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了�
 
 ...
 
-挂载在 janvas.Canvas 上的 components，如 `factory: (function () {...}())` 为封闭作用域下的立即执行方法，返回一个挂载了 $ctx 和 $stg 的工厂对象，这意味着组件是完全可以在不同的 janvas.Canvas 框架下复用的。
+挂载在 janvas.Canvas 上的 components，如 `factory: (function () {...}())` 为立即调用函数表达式(IIFE, Immediately-invoked function expressions)，返回一个会被默认挂载 $ctx/$stg 的工厂对象，这意味着仅一次编写好的组件完全可以在不同的 janvas.Canvas 框架下复用。
 
 ## 特殊说明
 
-为了便于进行样式的判断，**janvas** 在绘制的过程中会在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。
+仅为了便于进行样式的判断，**janvas** 在绘制的过程中在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。
 
 ## License
 
