@@ -2,11 +2,7 @@
 
 A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
-一款轻量、简单的 2d JavaScript 绘图库，基于 HTML5 Canvas 2d 绘图上下文，使用寄生组合式继承，完全面向对象方式开发，不仅便于 *拓展*，拥有极佳的 *灵活度*，更是 *渐进迭代式* 开发的绝佳选择。
-
-这意味着 **janvas** 从不强迫开发者遵循太多固定的概念或规则，概念或规则可由开发者根据应用的方向而定。
-
-同时也表示 **janvas** 中的所有内容都可单独使用，并且不存在过多的配置，还你一个书写原生 JavaScript 的体验。
+一款轻量、简单的 2d JavaScript 绘图库，基于 HTML5 Canvas 2d 绘图上下文，使用寄生组合式继承，完全面向对象方式开发，不仅便于 *拓展*，拥有极佳的 *灵活度* 和超越原生 canvas API 开发的 *性能*，更是 *渐进迭代式* 开发的绝佳选择。
 
 ## Janvas 目前能做
 
@@ -20,14 +16,11 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## Janvas 的特点
 
-1. 每个 **janvas** 子模块都能单独使用，无需整个项目都使用全新规则开发；
-2. 每个 **janvas** 的形状对象均含有绘制坐标与中心点坐标，且均：
-    - 内置一个用于变形的矩阵 Matrix，可轻松错切\(*skew*\)、缩放\(*scale*\)、旋转\(*angle*\)、平移\(*offset*\)；
-    - 内置一个用于自动应用样式的 Style；
-3. **janvas** 库处理变形的方式仅使用 ctx.transform\(matrix\)，从不使用 ctx.scale/ctx.rotate/ctx.translate 等耗时方法，从不在无须变形的时候应用矩阵；
-4. **janvas** 库处理样式的方式从不使用 ctx.save\(\)/ctx.restore\(\)，且从不在无须更改样式的时候应用导致影响性能；
-5. **janvas** 的所有内置图形使用寄生组合式继承构建层级关系，如 DotShape 继承于 Shape 继承于 BasicShape；
-6. 如果说 BasicShape 处理好了矩阵，Shape 处理好了样式，那么 DotShape 就处理好了图形中的所有点的位置，可以轻松获取 DotShape 的数据点，并且 DotShape 内置 “缓存”，仅在数据发生改变的时候才会自动应用变化。
+1. 简单，要什么就 new 出来；
+2. 高效，比原生 API 开发更快（几乎没有比它更快的了）；
+3. 易用，图形变形 getMatrix().set...()，样式 getStyle().set...()；
+4. 强大，原生绘制、SVG Path 支持、坐标点等等计算的支持；
+5. 兼容，只需一个容器 div，不管它在哪里，**janvas** 都能精准地填充它并适配高分屏。
 
 ## Janvas 示例
 
@@ -45,8 +38,8 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
   1. `<canvas></canvas>`
   2. `<script src="janvas.min.js"></script>`
   3. `var ctx = document.querySelector("canvas").getContext("2d");`
-  4. `var text = new janvas.Text(ctx, 50, 50, "Hello World");`
-  5. `text.fill();`
+  4. `var text = new janvas.Text(ctx, 50, 50, "Hello World"); // new 一个文本`
+  5. `text.fill(); // 文本绘制`
 
 - 使用 janvas.Canvas 开发
 
@@ -57,19 +50,60 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 <script src="../dist/janvas.min.js"></script>
 <script>
+  // 在 div 容器 中央绘制 "HelloWorld"
   var helloWorld = new janvas.Canvas({
-    container: "#app", // janvas 会在后台自动将画布适应容器大小
-    methods: { // 同时会生成 ctx, width, height 属性，使用 this 调用
-      init: function () { // 为控件添加名为 init 的初始化方法
-        var text = new janvas.Text(this.ctx, this.width / 2, this.height / 2, "Hello World");
-        text.getStyle().setFont("128px sans-serif").setTextAlign("center").setTextBaseline("middle");
-        text.fill();
+    container: "#app", // 找到容器 id
+    methods: {
+      init: function () { // 初始化
+        this.text = new janvas.Text(this.ctx, 0, 0, "HelloWorld"); // new 一个 Text
+        this.text.getStyle().setFont("small-caps bold 128px courier")
+          .setTextAlign("center").setTextBaseline("middle"); // 给 Text 设置样式
+      },
+      draw: function () {
+        this.text.fill(); // 让 Text 进行绘制
+      }
+    },
+    events: {
+      resize: function () { // 添加 resize 事件监听
+        this.text.initXY(this.width / 2, this.height / 2); // 置于中间
+        this.draw(); // 绘制一次
       }
     }
   });
 </script>
 
 </body>
+```
+
+- 使用 npm 安装，在 [vue](https://github.com/vuejs/vue) 中使用
+  1. `npm install janvas --save`
+  2. `<div ref="container"></div>`
+  3. `import janvas from "janvas"`
+  4. `...如下`
+
+```javascript
+mounted() {
+  // 在 div 容器 中央绘制 "HelloWorld"
+  const helloWorld = new janvas.Canvas({
+    container: this.$refs.container, // 找到容器的引用
+    methods: {
+      init: function () { // 初始化
+        this.text = new janvas.Text(this.ctx, 0, 0, "HelloWorld"); // new 一个 Text
+        this.text.getStyle().setFont("small-caps bold 128px courier")
+          .setTextAlign("center").setTextBaseline("middle"); // 给 Text 设置样式
+      },
+      draw: function () {
+        this.text.fill(); // 让 Text 进行绘制
+      }
+    },
+    events: {
+      resize: function () { // 添加 resize 事件监听
+        this.text.initXY(this.width / 2, this.height / 2); // 置于中间
+        this.draw(); // 绘制一次
+      }
+    }
+  });
+}
 ```
 
 ### [TaiChi](https://jarenchow.github.io/Janvas/examples/taichi.html)
@@ -111,7 +145,9 @@ v2.1.0 新增绘制连线的 Edge 类，实现了图数据库中的连线的样�
 
 ## 源代码
 
-[janvas.min.js](./dist/janvas.min.js) 仅使用 [uglifyjs](https://github.com/mishoo/UglifyJS) --compress 简单压缩无任何混淆。
+从一开始 **janvas** 本只想以最简洁的方式应用到项目中，所以没有以 npm 方式管理包，之后有需求与精力再重写。
+
+目前 [janvas.min.js](./dist/janvas.min.js) 仅使用 [uglifyjs](https://github.com/mishoo/UglifyJS) --compress 简单压缩无任何混淆。
 
 ## 文档
 
@@ -137,7 +173,7 @@ v2.1.0 新增绘制连线的 Edge 类，实现了图数据库中的连线的样�
 
 ### Collision
 
-### Setting
+### Config
 
 ### ImgData
 
@@ -211,11 +247,12 @@ janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了�
 
 ...
 
-挂载在 janvas.Canvas 上的 components，如 `factory: (function () {...}())` 为立即调用函数表达式(IIFE, Immediately-invoked function expressions)，返回一个会被默认挂载 $ctx/$stg 的工厂对象，这意味着仅一次编写好的组件完全可以在不同的 janvas.Canvas 框架下复用。
+挂载在 janvas.Canvas 上的 components，如 `factory: (function () {...}())` 为立即调用函数表达式(IIFE, Immediately-invoked function expressions)，返回一个会被默认挂载 $ctx/$cfg 的工厂对象，这意味着仅一次编写好的组件完全可以在不同的 janvas.Canvas 框架下复用。
 
-## 特殊说明
+## 特殊说明（不重要）
 
-仅为了便于进行样式的判断，**janvas** 在绘制的过程中在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。
+1. 为了便于进行样式的判断，**janvas** 在绘制的过程中在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。如果使用过 clip/clipEvenOdd/clear/clearEvenOdd 这种唯一使用过 ctx.save() 的方法，会额外挂载 ctx._CURRENT_FILL_STYLE 用于回退样式。
+2. 为了仅使用一次 transform 进行变换，**janvas** 可能时时刻刻都在进行坐标系变换，并在 ctx 上挂载 m11/m11i 等值（若如上用过 ctx.save() 会挂载 _m11/_m11i 等值），所以如果需与原生融合开发（不太推荐），需在 ** janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原。
 
 ## License
 

@@ -19,14 +19,23 @@
 
 <script src="../dist/janvas.min.js"></script>
 <script>
-  // Your code here.
+  // 在 div 容器 中央绘制 "HelloWorld"
   var helloWorld = new janvas.Canvas({
-    container: "#app",
+    container: "#app", // 找到容器 id
     methods: {
-      init: function () {
-        var text = new janvas.Text(this.ctx, this.width / 2, this.height / 2, "Hello World");
-        text.getStyle().setFont("128px sans-serif").setTextAlign("center").setTextBaseline("middle");
-        text.fill();
+      init: function () { // 初始化
+        this.text = new janvas.Text(this.ctx, 0, 0, "HelloWorld"); // new 一个 Text
+        this.text.getStyle().setFont("small-caps bold 128px courier")
+          .setTextAlign("center").setTextBaseline("middle"); // 给 Text 设置样式
+      },
+      draw: function () {
+        this.text.fill(); // 让 Text 进行绘制
+      }
+    },
+    events: {
+      resize: function () { // 添加 resize 事件监听
+        this.text.initXY(this.width / 2, this.height / 2); // 置于中间
+        this.draw(); // 绘制一次
       }
     }
   });

@@ -1,0 +1,276 @@
+var antv = new janvas.Canvas({
+  container: "#app",
+  components: {
+    factory: (function () {
+      function Node(ctx, id, x, y, label) {
+        this._defaultRadius = 1;
+        this._scale = 1;
+        this._showText = false;
+        this.arc = new janvas.FixedArc(ctx, 0, 0, this._defaultRadius);
+        this._arc = new janvas.FixedRect(ctx,
+          -this._defaultRadius, -this._defaultRadius,
+          this._defaultRadius * 2, this._defaultRadius * 2);
+        this._arc.setMatrix(this.arc.getMatrix());
+        this._arc.setStyle(this.arc.getStyle());
+        this.text = new janvas.Text(ctx, 0, 0, label || id);
+        this.text.getStyle().setFont("1.5px sans-serif").setTextBaseline("middle");
+        this.setXY(x, y);
+        this.highlight(false);
+        this.draw = this.fillStroke;
+      }
+
+      Node.prototype = {
+        setXY: function (x, y) {
+          this.arc.getMatrix().setOffset(this.x = x, this.y = y);
+          this.text.init(x + this._defaultRadius * this._scale * 2, y,
+            x + this._defaultRadius * this._scale * 2, y);
+        },
+        getX: function () {
+          return this.x;
+        },
+        getY: function () {
+          return this.y;
+        },
+        getLabel: function () {
+          return this.text.getText();
+        },
+        setScale: function (scale) {
+          this._scale = scale;
+          this.arc.getMatrix().setScale(scale, scale);
+          this.text.getMatrix().setScale(scale, scale);
+        },
+        fillStroke: function () {
+          this.arc.fillStroke();
+          if (this._showText) this.text.fill();
+        },
+        onlyFill: function () {
+          this._arc.fill();
+        },
+        in: function (bg) {
+          return janvas.Collision.rect(
+            this.x - this._defaultRadius * this._scale,
+            this.y - this._defaultRadius * this._scale,
+            this.x + this._defaultRadius * this._scale,
+            this.y + this._defaultRadius * this._scale,
+            bg.sx, bg.sy, bg.sw, bg.sh);
+        },
+        isPointInPath: function (x, y) {
+          return this._arc.isPointInPath(x, y);
+        },
+        highlight: function (flag) {
+          if (flag) this.arc.getStyle().setFillStyle("#FF0000")
+            .setStrokeStyle("#000000").setLineWidth(1);
+          else this.arc.getStyle().setFillStyle("#C6E5FF")
+            .setStrokeStyle("#5B8FF9").setLineWidth(0.3);
+        },
+        showText: function (flag) {
+          this._showText = flag;
+        },
+        mark: function () {
+          this.lastX = this.x;
+          this.lastY = this.y;
+        },
+        drag: function (moveX, moveY) {
+          this.setXY(this.lastX + moveX, this.lastY + moveY);
+        },
+        wheel: function (x, y, scaling, scale) {
+          this.setScale(scale);
+          this.setXY(x + (this.x - x) * scaling, y + (this.y - y) * scaling);
+          this.draw = scale * this._defaultRadius < 1 ? this.onlyFill : this.fillStroke;
+        }
+      };
+
+      function Edge(ctx, source, target) {
+        this._show = true;
+        this.source = source;
+        this.target = target;
+        this.line = new janvas.Line(ctx, 0, 0, 0, 0);
+        this.line.getStyle().setStrokeStyle("#333333").setLineWidth(0.1);
+        this.refresh();
+      }
+
+      Edge.prototype = {
+        draw: function () {
+          if (this._show) this.line.stroke();
+        },
+        refresh: function () {
+          this.line.initXY(this.source.getX(), this.source.getY())
+            .setEndX(this.target.getX()).setEndY(this.target.getY());
+        },
+        setLineWidth: function (scale) {
+          this.line.getStyle().setLineWidth(scale / 10);
+        },
+        show: function (flag) {
+          this._show = flag;
+        }
+      };
+
+      function Hint(ctx, cfg) {
+        this._show = false;
+        this._of = this._pdt = 3; // offset, paddingLeft, paddingTop
+        this._pdl = 5;
+        this.cfg = cfg;
+        this.roundRect = new janvas.RoundRect(ctx, 0, 0, 0, 0);
+        this.roundRect.getStyle().setFillStyle("white").setStrokeStyle("white");
+        this.text = new janvas.Text(ctx, 0, 0, "");
+        this.text.getStyle().setFont("12px sans-serif").setTextBaseline("bottom");
+        this.shadow = new janvas.ShadowStyle().setShadowBlur(20).setShadowColor("grey");
+      }
+
+      Hint.prototype = {
+        draw: function () {
+          if (this._show) {
+            this.cfg.setShadowStyles(this.shadow);
+            this.roundRect.fillStroke();
+            this.cfg.resetShadowStyles();
+            this.text.fill();
+          }
+        },
+        setXY: function (x, y) {
+          x += this._of;
+          y -= this._of;
+          this.text.initXY(x + this._pdl, y - this._pdt);
+          this.roundRect.initXY(x, y).setWidth(this._textWidth + this._pdl * 2)
+            .setHeight(-(this._textHeight + this._pdt * 2)).setRadius();
+        },
+        setLabel: function (label) {
+          if (this.label === label) return;
+          this.label = label;
+          this.text.setText(label);
+          var metrics = janvas.Utils.measureText(label, this.text.getStyle().getFont());
+          this._textWidth = metrics.width;
+          this._textHeight = metrics.height;
+        },
+        show: function (flag) {
+          this._show = flag;
+        }
+      };
+
+      return {
+        nodesMap: new Map(),
+        newNode: function (id, x, y, label) {
+          var node = new Node(this.$ctx, id, x, y, label);
+          this.nodesMap.set(id, node);
+          return node;
+        },
+        newEdge: function (source, target) {
+          source = this.nodesMap.get(source);
+          target = this.nodesMap.get(target);
+          return source && target ? new Edge(this.$ctx, source, target) : void (0);
+        },
+        newHint: function () {
+          return new Hint(this.$ctx, this.$cfg);
+        }
+      };
+    }())
+  },
+  methods: {
+    init: function () {
+      this.nodes = [];
+      this.edges = [];
+      this.hint = this.factory.newHint();
+      this.background = new janvas.Rect(this.ctx, 0, 0, this.width, this.height);
+    },
+    draw: function () {
+      this.background.clear(0, 0, this.width, this.height);
+      this.edges.forEach(function (edge) {
+        edge.draw();
+      });
+      this.nodes.forEach(function (node) {
+        if (node.in(this.background)) node.draw();
+      }, this);
+      this.hint.draw();
+    },
+    data: function (res) {
+      this.nodes.length = this.edges.length = 0;
+      res.nodes.forEach(function (node) {
+        this.nodes.push(this.factory.newNode(node.id,
+          node.x, node.y, node.olabel));
+      }, this);
+      res.edges.forEach(function (edge) {
+        edge = this.factory.newEdge(edge.source, edge.target);
+        if (edge) this.edges.push(edge);
+      }, this);
+      this.draw();
+    }
+  },
+  events: {
+    mousedown: function () {
+      this.mousemove();
+      this._mousedown = true;
+      this.nodes.forEach(function (node) {
+        node.mark();
+      });
+      if (this._current === void (0)) {
+        this.edges.forEach(function (edge) {
+          edge.show(false);
+        });
+      }
+      this.draw();
+    },
+    mousemove: function () {
+      if (this._mousedown) {
+        if (this._current === void (0)) {
+          this.nodes.forEach(function (node) {
+            node.drag(this.moveX, this.moveY);
+          }, this);
+        } else {
+          this._current.drag(this.moveX, this.moveY);
+          this.hint.setXY(this.x, this.y);
+          this.edges.forEach(function (edge) {
+            edge.refresh();
+          });
+        }
+        this.draw();
+      } else {
+        var mousein = true;
+        this.nodes.forEach(function (node) {
+          if (node.isPointInPath(this.x, this.y)) {
+            this._current = node;
+            mousein = false;
+          }
+          node.highlight(false);
+        }, this);
+        if (mousein) {
+          this._current = void (0);
+          this.hint.show(false);
+        } else {
+          this._current.highlight(true);
+          this.hint.setLabel(this._current.getLabel());
+          this.hint.setXY(this.x, this.y);
+          this.hint.show(true);
+        }
+        this.draw();
+      }
+    },
+    mouseup: function () {
+      this._mousedown = false;
+      this.edges.forEach(function (edge) {
+        edge.show(true);
+        edge.refresh();
+      });
+      this.draw();
+    },
+    wheel: function () {
+      this.nodes.forEach(function (node) {
+        node.wheel(this.x, this.y, this.scaling, this.scale)
+      }, this);
+      this.edges.forEach(function (edge) {
+        edge.refresh();
+        edge.setLineWidth(this.scale);
+      }, this);
+      this.draw();
+    },
+    resize: function () {
+      this.background.setWidth(this.width).setHeight(this.height);
+      this.draw();
+    }
+  }
+});
+// 原示例：https://g6.antv.vision/zh/examples/performance/perf#moreData
+fetch("https://gw.alipayobjects.com/os/bmw-prod/f1565312-d537-4231-adf5-81cb1cd3a0e8.json")
+  .then(function (res) {
+    return res.json();
+  }).then(function (res) {
+  antv.data(res);
+});

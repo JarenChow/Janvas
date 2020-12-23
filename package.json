@@ -1,0 +1,31 @@
+{
+  "name": "janvas",
+  "version": "2.3.2",
+  "description": "A lightweight&simple 2D javascript library based on HTML5 Canvas.",
+  "main": "dist/janvas.min.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JarenChow/Janvas.git"
+  },
+  "keywords": [
+    "javascript",
+    "canvas",
+    "svg",
+    "2d",
+    "drawing",
+    "graphic",
+    "library"
+  ],
+  "author": "JarenChow",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JarenChow/Janvas/issues"
+  },
+  "homepage": "https://github.com/JarenChow/Janvas#readme"
+}
