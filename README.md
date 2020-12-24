@@ -22,14 +22,57 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 4. 强大，原生绘制、SVG Path 支持、坐标点等等计算的支持；
 5. 兼容，只需一个容器 div，不管它在哪里，**janvas** 都能精准地填充它并适配高分屏。
 
-## Janvas 示例
-
-详见 [JanvasExamples](https://github.com/JarenChow/JanvasExamples)
-
 ## 安装
 
 1. `<script src="https://cdn.jsdelivr.net/npm/janvas/dist/janvas.min.js"></script>`
 2. `npm install janvas --save`
+
+## [Hello World](https://jarenchow.github.io/JanvasExamples/html/hello_world.html)
+
+- 与既有 Canvas 项目整合
+  1. `<canvas></canvas>`
+  2. `<script src="https://cdn.jsdelivr.net/npm/janvas/dist/janvas.min.js"></script>`
+  3. `var ctx = document.querySelector("canvas").getContext("2d");`
+  4. `var text = new janvas.Text(ctx, 50, 50, "HelloWorld"); // new 一个文本`
+  5. `text.fill(); // 文本绘制`
+
+- 使用 janvas.Canvas 开发
+
+```html
+<body>
+
+<div id="app" style="width: 100%;height: 100%;"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/janvas/dist/janvas.min.js"></script>
+<script>
+  // 在 div 容器 中央绘制 "HelloWorld"
+  var helloWorld = new janvas.Canvas({
+    container: "#app", // 找到容器 id 或 Element 的引用
+    methods: {
+      init: function () { // 初始化
+        this.text = new janvas.Text(this.ctx, 0, 0, "HelloWorld"); // new 一个 Text
+        this.text.getStyle().setFont("small-caps bold 128px courier")
+          .setTextAlign("center").setTextBaseline("middle"); // 给 Text 设置样式
+      },
+      draw: function () {
+        this.text.fill(); // 让 Text 进行绘制
+      }
+    },
+    events: {
+      resize: function () { // 添加 resize 事件监听
+        this.text.initXY(this.width / 2, this.height / 2); // 置于中间
+        this.draw(); // 绘制一次
+      }
+    }
+  });
+</script>
+
+</body>
+```
+
+## Janvas 示例
+
+详见 [JanvasExamples](https://github.com/JarenChow/JanvasExamples)
 
 ## 源代码
 
