@@ -18,9 +18,9 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 1. 简单，要什么就 new 出来；
 2. 高效，比原生 API 开发更快（几乎没有比它更快的了）；
-3. 易用，图形变形 getMatrix().set...()，样式 getStyle().set...()；
+3. 易用，图形变形 shape.getMatrix().set...()，样式 shape.getStyle().set...()；
 4. 强大，原生绘制、SVG Path 支持、坐标点等等计算的支持；
-5. 兼容，只需一个容器 div，不管它在哪里，**janvas** 都能精准地填充它并适配高分屏。
+5. 兼容，只需一个具有宽高的容器 div，不管它在哪里 **janvas** 都能精准地填充它并适配高分屏。
 
 ## 安装
 
@@ -50,7 +50,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
     container: "#app", // 找到容器 id 或 Element 的引用
     methods: {
       init: function () { // 初始化
-        this.text = new janvas.Text(this.ctx, 0, 0, "HelloWorld"); // new 一个 Text
+        this.text = new janvas.Text(this.$ctx, 0, 0, "HelloWorld"); // new 一个 Text
         this.text.getStyle().setFont("small-caps bold 128px courier")
           .setTextAlign("center").setTextBaseline("middle"); // 给 Text 设置样式
       },
@@ -175,8 +175,6 @@ janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了�
 ### FixedArc
 
 ### Canvas
-
-...
 
 挂载在 janvas.Canvas 上的 components，如 `factory: (function () {...}())` 为立即调用函数表达式(IIFE, Immediately-invoked function expressions)，返回一个会被默认挂载 $ctx/$cfg 的工厂对象，这意味着仅一次编写好的组件完全可以在不同的 janvas.Canvas 框架下复用。
 
