@@ -47,7 +47,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 <script>
   // 在 div 容器 中央绘制 "HelloWorld"
   var helloWorld = new janvas.Canvas({
-    container: "#app", // 找到容器 id 或 Element 的引用
+    container: "#app", // 找到容器 id
     methods: {
       init: function () { // 初始化
         this.text = new janvas.Text(this.$ctx, 0, 0, "HelloWorld"); // new 一个 Text
@@ -60,8 +60,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
     },
     events: {
       resize: function () { // 添加 resize 事件监听
-        this.text.initXY(this.width / 2, this.height / 2); // 置于中间
-        this.draw(); // 绘制一次
+        this.text.initXY(this.$width / 2, this.$height / 2); // 置于中间
       }
     }
   });
