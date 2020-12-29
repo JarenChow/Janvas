@@ -79,7 +79,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 目前 [janvas.min.js](./dist/janvas.min.js) 仅使用 [uglifyjs](https://github.com/mishoo/UglifyJS) --compress 简单压缩无任何混淆。
 
-## 文档
+## 文档（待写）
 
 ### Utils
 
@@ -181,6 +181,7 @@ janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了�
 
 1. 为了便于进行样式的判断，**janvas** 在绘制的过程中在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。如果使用过 clip/clipEvenOdd/clear/clearEvenOdd 这种唯一使用过 ctx.save() 的方法，会额外挂载 ctx._CURRENT_FILL_STYLE 用于回退样式。
 2. 为了仅使用一次 transform 进行变换，**janvas** 可能时时刻刻都在进行坐标系变换，并在 ctx 上挂载 m11/m11i 等值（若如上用过 ctx.save() 会挂载 _m11/_m11i 等值），所以如果需与原生融合开发（不太推荐），需在 ** janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原。
+3. 为了实现 ResizeObserve 相关内容，会在 janvas.Canvas._wrapper 上挂载 _count 以计数，在 janvas.Canvas.$canvas 上挂载 _context 以执行方法。
 
 ## License
 
