@@ -81,107 +81,11 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 文档（待写）
 
-### Utils
-
-### Rgb
-
-### Hsl
-
-### Matrix
-
-### FillStrokeStyle
-
-### TextStyle
-
-### ShapeStyle
-
-### ShadowStyle
-
-### OtherStyle
-
-### Point
-
-### Collision
-
-### Config
-
-### ImgData
-
-目前对于 ImageData 的处理都挂载在 ImgData 类上，后续如有需求可能会考虑改写静态方法，改写成挂载在 ImageData.prototype 上。
-
-### Animate
-
-### AnimateITV
-
-### AnimateRAF
-
-### BasicShape
-
-### Shape
-
-### Rect
-
-### RoundRect
-
-### Image
-
-**janvas** 中加载一张图片非常容易：`var img = new janvas.Image(ctx, 0, 0, src);`。
-
-janvas.Image 会自动加载图片并进行一次绘制，如果已经存在了图片，可以使用 `img.setImage(img)` 来设置其图片。
-
-### Arc
-
-### Sector
-
-### Ellipse
-
-### Line
-
-### BezierLine
-
-### Edge
-
-### ArrowHead
-
-### Arrow
-
-### RegularPolygon
-
-### RegularStar
-
-### Text
-
-### DotShape
-
-### Polyline
-
-### Bezier
-
-### Polygon
-
-### PolyRect
-
-### PolyArc
-
-### SmoothLine
-
-### Dots
-
-### FixedShape
-
-### FixedRect
-
-### FixedArc
-
-### Canvas
-
-挂载在 janvas.Canvas 上的 components，如 `factory: (function () {...}())` 为立即调用函数表达式(IIFE, Immediately-invoked function expressions)，返回一个会被默认挂载 $ctx/$cfg 的工厂对象，这意味着仅一次编写好的组件完全可以在不同的 janvas.Canvas 框架下复用。
-
 ## 特殊说明（不重要）
 
 1. 为了便于进行样式的判断，**janvas** 在绘制的过程中在绘图上下文 ctx 上相对应的挂载用于读写的属性值，如 ctx.fillStyle 则会挂载一个 ctx.CURRENT_FILL_STYLE。如果使用过 clip/clipEvenOdd/clear/clearEvenOdd 这种唯一使用过 ctx.save() 的方法，会额外挂载 ctx._CURRENT_FILL_STYLE 用于回退样式。
 2. 为了仅使用一次 transform 进行变换，**janvas** 可能时时刻刻都在进行坐标系变换，并在 ctx 上挂载 m11/m11i 等值（若如上用过 ctx.save() 会挂载 _m11/_m11i 等值），所以如果需与原生融合开发（不太推荐），需在 ** janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原。
-3. 为了实现 ResizeObserve 相关内容，会在 janvas.Canvas._wrapper 上挂载 _count 以计数，在 janvas.Canvas.$canvas 上挂载 _context 以执行方法。
+3. 为了实现 ResizeObserver/IntersectionObserver 相关内容，会在 janvas.Canvas._wrapper 上挂载 _count 以计数，在 janvas.Canvas.$canvas 上挂载 _context 以执行方法。
 
 ## License
 
