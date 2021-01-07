@@ -804,6 +804,12 @@
 			- SmoothLine
 
 				- new SmoothLine(ctx, sx, sy, points, length, cx, cy)
+				- prototype
+
+					- getter/setter
+
+						- getTension()
+						- setTension(tension)
 
 			- Dots
 
