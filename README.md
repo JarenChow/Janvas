@@ -90,7 +90,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 特殊说明
 
-如果同时使用原生 Canvas API 开发，需在 ** janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原（**janvas** 绘制过程中从不使用 save/restore 这类低效率的方法。）
+如果同时使用原生 Canvas API 开发，需在 **janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原（**janvas** 绘制过程中从不使用 save/restore 这类低效率的方法。）
 
 ## License
 
