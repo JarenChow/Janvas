@@ -68,24 +68,21 @@
 - new Rgb(red, green, blue, alpha)
 - static
 
-	- copy(rgb1, rgb2)
-	- clone(rgb)
-	- fromRgbString(rgbString)
-	- fromHexString(hexString)
-	- fromRgb(rgb)
-	- fromHsl(hsl)
-	- randomRgb(randomAlpha)
-	- mix(back, front)
-	- extractFront(back1, result1, back2_or_alpha, [result2])
+	- mixing(back, front, ratio, result)
+	- extract(back1, mix1, back2_or_alpha, mix2_or_result, result)
+	- sRgbMixing(srgb1, srgb2, ratio, result)
+	- sRgbGammaMixing(srgb1, srgb2, ratio, result)
 
 - prototype
 
+	- fromRgbString(rgbString)
+	- fromHexString(hexString)
+	- fromHsl(hsl)
+	- random(red, green, blue, alpha)
 	- sRgbInverseCompanding()
 	- sRgbCompanding()
-	- sRgbInverseGammaMixing(srgb1, srgb2, lambda)
-	- sRgbMarksGammaMixing(srgb1, srgb2, lambda)
-	- toRgbString([containsAlpha])
-	- toHexString([containsAlpha])
+	- toRgbString(containsAlpha)
+	- toHexString(containsAlpha)
 	- init(red, green, blue, alpha)
 	- equals(rgb)
 	- copy(rgb)
@@ -104,17 +101,11 @@
 ### Hsl
 
 - new Hsl(hue, saturation, lightness, alpha)
-- static
-
-	- copy(hsl1, hsl2)
-	- clone(hsl)
-	- fromHslString(hslString)
-	- fromHsl(hsl)
-	- fromRgb(rgb)
-	- randomHsl([randomAlpha])
-
 - prototype
 
+	- fromHslString(hslString)
+	- fromRgb(rgb)
+	- random(hue, saturation, lightness, alpha)
 	- toHslString([containsAlpha])
 	- init(hue, saturation, lightness, alpha)
 	- equals(hsl)
@@ -136,8 +127,6 @@
 - new Matrix()
 - prototype
 
-	- init(skewX, skewY, scaleX, scaleY, angle, offsetX, offsetY)
-	- isNotDefault()
 	- equals(matrix)
 	- getM11()
 	- getM11i()
@@ -254,55 +243,23 @@
 - new Point(x, y)
 - static
 
-	- modulus(point1, point2)
-	- slope(point1, point2)
-	- radian(point1, point2)
-	- dotProduct(point1, point2)
-	- crossProduct(point1, point2)
-	- theta(point1, point2)
-	- offsetX(point1, point2)
-	- offsetY(point1, point2)
-	- copy(point1, point2)
-	- clone(point)
-	- unit(point)
-	- abs(point)
-	- inverse(point)
-	- inverseX(point)
-	- inverseY(point)
-	- vertical(point)
-	- verticalAnti(point)
-	- add(point1, point2)
-	- subtract(point1, point2)
-	- multiply(point1, point2)
-	- divide(point1, point2)
-	- inline(point1, point2, lambda)
-	- lambda2point(point1, point2)
-	- lambda2line(point1, point2, point3)
-	- point2pointAnti(point1, point2)
-	- point2lineAnti(point1, point2, point3)
-	- point2point(point1, point2)
-	- point2line(point1, point2, point3)
-	- line2line(point1, point2, point3, point4)
-	- line2arc(point1, point2, point3, radius)
-	- arc2arc(point1, radius1, point2, radius2)
-	- arc(point1, point2, point3)
-	- skewX(point, skewX)
-	- skewY(point, skewY)
-	- skew(point, skewX, skewY)
-	- scaleX(point, scaleX)
-	- scaleY(point, scaleY)
-	- scale(point, scaleX, scaleY)
-	- rotate(point, angle)
-	- translateX(point, offsetX)
-	- translateY(point, offsetY)
-	- translate(point, offsetX, offsetY)
-	- transform(point, matrix)
-	- resetTransform(point, matrix)
+	- basisX
+	- basisY
+	- vertical2point(point1, point2, result)
+	- vertical2line(point1, point2, point3, result)
+	- line2line(point1, point2, point3, point4, result)
+	- line2arc(point1, point2, point, radius, result1, result2)
+	- arc2arc(point1, radius1, point2, radius2, result1, result2)
+	- arc(point1, point2, point3, result)
 
 - prototype
 
 	- init(x, y)
 	- equals(point)
+	- ratio2point(point)
+	- ratio2line(point1, point2)
+	- anti2point(point)
+	- anti2line(point1, point2)
 	- modulus()
 	- slope()
 	- radian()
@@ -324,7 +281,7 @@
 	- subtract(point)
 	- multiply(point)
 	- divide(point)
-	- inline(point, lambda)
+	- inline(point, ratio)
 	- skewX(skewX)
 	- skewY(skewY)
 	- skew(skewX, skewY)
@@ -335,8 +292,8 @@
 	- translateX(offsetX)
 	- translateY(offsetY)
 	- translate(offsetX, offsetY)
-	- transform(matrix)
-	- resetTransform(matrix)
+	- transform(mat)
+	- resetTransform(mat)
 	- getter/setter
 
 		- getX()
@@ -383,10 +340,6 @@
 	- isPointInPath(x, y)
 	- isPointInStroke(x, y)
 	- getPixelIndex(x, y)
-	- getPixelColor(x, y)
-	- getAverageColor([x], [y], [w], [h])
-	- setPixelColor(rgb, x, y)
-	- setPixelsColor(rgb, [x], [y], [w], [h])
 	- forEach(callback, context, [x], [y], [w], [h])
 	- mosaic(t, [x], [y], [w], [h])
 	- transparencyDisposal(ratio, [x], [y], [w], [h])
@@ -677,7 +630,7 @@
 							- getTargetY()
 							- getAngle()
 							- getLineAngle()
-							- lambdaInRange()
+							- ratioInRange()
 							- getter/setter
 
 								- getAngleX()
@@ -713,7 +666,7 @@
 							- getTargetX()
 							- getTargetY()
 							- getLineAngle()
-							- lambdaInRange()
+							- ratioInRange()
 							- getter/setter
 
 								- getEndX()
@@ -768,8 +721,6 @@
 			- insertAt(x, y, index)
 			- delete(index)
 			- update(x, y, index)
-			- select(index)
-			- selectAll()
 			- getter/setter
 
 				- getPoints()
@@ -855,3 +806,5 @@
 						- getStartAngle()
 						- getEndAngle()
 						- getAnticlockwise()
+
+*XMind: ZEN - Trial Version*
