@@ -15,6 +15,52 @@
 			- remove(key)
 			- clear()
 
+	- 动画
+
+		- $ease
+
+			- in
+
+				- linear(t)
+				- sine(t)
+				- quad(t)
+				- cubic(t)
+				- quart(t)
+				- quint(t)
+				- expo(t)
+				- circ(t)
+				- back(t)
+				- elastic(t)
+				- bounce(t)
+
+			- out
+
+				- linear(t)
+				- sine(t)
+				- quad(t)
+				- cubic(t)
+				- quart(t)
+				- quint(t)
+				- expo(t)
+				- circ(t)
+				- back(t)
+				- elastic(t)
+				- bounce(t)
+
+			- inout
+
+				- linear(t)
+				- sine(t)
+				- quad(t)
+				- cubic(t)
+				- quart(t)
+				- quint(t)
+				- expo(t)
+				- circ(t)
+				- back(t)
+				- elastic(t)
+				- bounce(t)
+
 	- 继承
 
 		- inheritPrototype(subType, superType, ...)
