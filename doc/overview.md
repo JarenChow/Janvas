@@ -499,6 +499,7 @@
 - prototype
 
 	- merge(object)
+	- isVisible()
 	- destroy()
 
 ## view
@@ -852,5 +853,3 @@
 						- getStartAngle()
 						- getEndAngle()
 						- getAnticlockwise()
-
-*XMind: ZEN - Trial Version*
