@@ -27,14 +27,14 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 安装
 
-1. `<script src="https://cdn.jsdelivr.net/npm/janvas/dist/janvas.min.js"></script>`
+1. `<script src="https://cdn.jsdelivr.net/npm/janvas"></script>`
 2. `npm install janvas --save`
 
 ## [Hello World](https://jarenchow.github.io/JanvasExamples/html/hello_world.html)
 
 - 与既有 Canvas 项目整合
   1. `<canvas></canvas>`
-  2. `<script src="https://cdn.jsdelivr.net/npm/janvas/dist/janvas.min.js"></script>`
+  2. `<script src="https://cdn.jsdelivr.net/npm/janvas"></script>`
   3. `var ctx = document.querySelector("canvas").getContext("2d");`
   4. `var text = new janvas.Text(ctx, 50, 50, "HelloWorld"); // new 一个文本`
   5. `text.fill(); // 文本绘制`
@@ -46,7 +46,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 <div id="app" style="width: 100%;height: 100%;"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/janvas/dist/janvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/janvas"></script>
 <script>
   // 在 div 容器 中央绘制 "HelloWorld"
   var helloWorld = new janvas.Canvas({
