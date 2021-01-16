@@ -466,7 +466,7 @@
 		- contextmenu(ev)
 		- wheel(ev)
 		- resize()
-		- visibility(visible)
+		- visibilitychange(visible)
 		- blur(ev)
 		- focus(ev)
 		- keydown(ev)
