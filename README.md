@@ -88,6 +88,20 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 文档（待写）
 
+### janvas.Canvas
+
+#### 生命周期
+
+1. 创建：`let obj = new janvas.Canvas(options);`
+2. 周期：![lifecircle](./doc/lifecircle.png)
+3. 销毁：`obj.destroy();`，框架将：
+   - 移除所有事件监听器
+   - 删除所有事件监听器
+   - 停止动画并移除引用
+   - 移除 `<canvas>` 元素
+   - `resize/intersection unobserve`
+   - 删除 obj 中所有键值对
+
 ## 特殊说明
 
 如果同时使用原生 Canvas API 开发，需在 **janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原（**janvas** 绘制过程中从不使用 save/restore 这类低效率的方法。）
