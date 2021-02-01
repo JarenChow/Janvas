@@ -8,7 +8,7 @@
 
 	- 存储
 
-		- $ls
+		- ls
 
 			- get(key)
 			- set(key, value)
@@ -17,7 +17,7 @@
 
 	- 动画
 
-		- $ease
+		- ease
 
 			- in
 
