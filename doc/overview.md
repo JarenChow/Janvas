@@ -101,6 +101,7 @@
 
 		- debounce(func, delay, immediate)
 		- throttle(func, delay, useTime)
+		- nextTick(func)
 
 	- 其他
 
@@ -420,6 +421,10 @@
 ### Animate
 
 - new Animate(func, duration, interval)
+- static
+
+	- bind(object, $raf, duration)
+
 - prototype
 
 	- init()
@@ -459,6 +464,7 @@
 		- touchstart(ev)
 		- touchmove(ev)
 		- touchend(ev)
+		- touchcancel(ev)
 		- mouseover(ev)
 		- mouseout(ev)
 		- click(ev)
@@ -469,11 +475,14 @@
 		- visibilitychange(visible)
 		- blur(ev)
 		- focus(ev)
+		- focusin(ev)
+		- focusout(ev)
 		- keydown(ev)
 		- keyup(ev)
 		- keypress(ev)
 
 	- functions
+	- callbacks
 
 - $
 
@@ -741,18 +750,6 @@
 
 						- new RegularStar(ctx, sx, sy, r, sides, cx, cy)
 
-	- Text
-
-		- new Text(ctx, sx, sy, text, cx, cy)
-		- prototype
-
-			- getter/setter
-
-				- getText()
-				- setText(text)
-				- getStyle()
-				- setStyle(style)
-
 	- DotShape
 
 		- new DotShape(ctx, sx, sy, points, length, cx, cy)
@@ -849,3 +846,15 @@
 						- getStartAngle()
 						- getEndAngle()
 						- getAnticlockwise()
+
+	- Text
+
+		- new Text(ctx, sx, sy, text, cx, cy)
+		- prototype
+
+			- getter/setter
+
+				- getText()
+				- setText(text)
+				- getStyle()
+				- setStyle(style)
