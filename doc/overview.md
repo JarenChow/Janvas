@@ -15,6 +15,16 @@
 			- remove(key)
 			- clear()
 
+		- LRU
+
+			- new LRU(maxSize)
+			- prototype
+
+				- get(key)
+				- set(key, value)
+				- clear()
+				- length
+
 	- 动画
 
 		- ease
@@ -423,7 +433,21 @@
 - new Animate(func, duration, interval)
 - static
 
-	- bind(object, $raf, duration)
+	- mixin(object, $raf, duration)
+
+		- mixin
+
+			- $start()
+			- $stop(force, toEnd)
+			- $update(interval)
+			- $duration
+			- $isRunning
+
+		- abstract
+
+			- beforeUpdate()
+			- update(ratio)
+			- afterUpdate()
 
 - prototype
 
