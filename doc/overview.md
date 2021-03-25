@@ -275,9 +275,9 @@
 		- getShadowOffsetY()
 		- setShadowOffsetY(shadowOffsetY)
 
-### OtherStyle
+### GlobalStyle
 
-- new OtherStyle()
+- new GlobalStyle()
 - prototype
 
 	- getter/setter
@@ -379,10 +379,10 @@
 	- resetGlobalCompositeOperation()
 	- setFilter(filter)
 	- resetFilter()
-	- setShadowStyles(shadowStyle)
-	- resetShadowStyles()
-	- setOtherStyles(otherStyle)
-	- resetOtherStyles()
+	- setShadowStyle(shadowStyle)
+	- resetShadowStyle()
+	- setGlobalStyle(globalStyle)
+	- resetGlobalStyle()
 
 ### ImageData
 
@@ -431,6 +431,9 @@
 ### Animate
 
 - new Animate(func, duration, interval)
+
+	- func(timestamp, interval)
+
 - static
 
 	- mixin(object, $raf, duration)
@@ -477,7 +480,7 @@
 	- methods
 
 		- init()
-		- update(ts)
+		- update(timestamp, interval)
 		- draw()
 
 	- events

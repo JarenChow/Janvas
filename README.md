@@ -82,8 +82,6 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 目前 [janvas.min.js](./dist/janvas.min.js) 仅使用 [uglifyjs](https://github.com/mishoo/UglifyJS) --compress 简单压缩无混淆。
 
-对源码如有疑问或什么需要可以进讨论群，有效期 7 天：[QRCode](QRCode.jpg)。
-
 ## 总览
 
 [overview.md](./doc/overview.md)
