@@ -245,19 +245,21 @@
 				- getLineWidth()
 				- setLineWidth(lineWidth)
 
-	- TextStyle
+		- subclass
 
-		- new TextStyle()
-		- prototype
+			- TextStyle
 
-			- getter/setter
+				- new TextStyle()
+				- prototype
 
-				- getFont()
-				- setFont(font)
-				- getTextAlign()
-				- setTextAlign(textAlign)
-				- getTextBaseline()
-				- setTextBaseline(textBaseline)
+					- getter/setter
+
+						- getFont()
+						- setFont(font)
+						- getTextAlign()
+						- setTextAlign(textAlign)
+						- getTextBaseline()
+						- setTextBaseline(textBaseline)
 
 ### ShadowStyle
 
@@ -788,6 +790,7 @@
 			- insertAt(x, y, index)
 			- delete(index)
 			- update(x, y, index)
+			- select(index, offset)
 			- getter/setter
 
 				- getPoints()
