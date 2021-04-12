@@ -20,7 +20,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 ## Janvas 的特点
 
 1. 简单，要什么就 new 出来；
-2. 高效，比原生 API 开发更快（几乎没有比它更快的了）；
+2. 高效，比原生 API 开发更直观、渲染效率也更高；
 3. 易用，图形变形 shape.getMatrix().set...()，样式 shape.getStyle().set...()；
 4. 强大，原生封装绘制、SVG Path 支持、坐标点等等计算的支持；
 5. 兼容，只需一个具有宽高的容器 div，不管它在哪里 **janvas** 都能精准地填充它并适配高分屏。
@@ -52,18 +52,16 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
   var helloWorld = new janvas.Canvas({
     container: "#app", // 找到容器 id
     methods: {
-      init: function () { // 初始化
+      init: function () { // 初始化，此回调仅会调用一次
         this.text = new janvas.Text(this.$ctx, 0, 0, "HelloWorld"); // new 一个 Text
         this.text.getStyle().setFont("small-caps bold 128px courier")
           .setTextAlign("center").setTextBaseline("middle"); // 给 Text 设置样式
       },
-      draw: function () {
+      resize: function () { // 在每次 <canvas> 大小发生改变时回调
+        this.text.setStart(this.$width / 2, this.$height / 2); // 置于中间
+      },
+      draw: function () { // 在此回调时
         this.text.fill(); // 让 Text 进行绘制
-      }
-    },
-    events: {
-      resize: function () { // 添加 resize 事件监听
-        this.text.initXY(this.$width / 2, this.$height / 2); // 置于中间
       }
     }
   });
@@ -94,7 +92,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 1. 创建：`var obj = new janvas.Canvas(options);`
 2. 周期：![lifecircle](./doc/lifecircle.png)
-3. 销毁：`obj.destroy();`，框架将：
+3. 销毁：`obj.$destroy();`，框架将：
    - 移除所有事件监听器
    - 删除所有事件监听器
    - 停止动画并移除引用
@@ -104,7 +102,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 特殊说明
 
-如果同时使用原生 Canvas API 开发，需在 **janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原（**janvas** 绘制过程中从不使用 save/restore 这类低效率的方法。）
+如果同时使用原生 Canvas API 开发，需在 **janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原（**janvas** 绘制过程中不会使用 save/restore 等低效率的方法。）
 
 ## License
 
