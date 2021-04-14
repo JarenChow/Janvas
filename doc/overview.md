@@ -248,56 +248,6 @@
 		- getY()
 		- setY(y)
 
-### ImageData
-
-- prototype
-
-	- getImageData()
-	- setImageData(sx, sy, sw_or_imageData, sh_or_sw)
-	- toDataURL(type)
-	- saveAsImage(filename, type)
-	- resetPut()
-	- put()
-	- isPointInPath(x, y)
-	- isPointInStroke(x, y)
-	- forEach(callback, context, x, y, w, h)
-	- mosaic(t, x, y, w, h)
-	- transparencyDisposal(ratio, x, y, w, h)
-	- reverseColor(x, y, w, h)
-	- greyProcessing(x, y, w, h)
-	- blackWhite(ratio, x, y, w, h)
-	- relief()
-	- sunGlass()
-	- frostedGlass(t)
-	- getter/setter
-
-		- inherit Rect
-
-			- getWidth()
-			- getHeight()
-			- getStartX()
-			- getStartY()
-			- getLeft()
-			- getTop()
-			- getRight()
-			- getBottom()
-
-		- getData()
-		- setStartX(sx)
-		- setStartY(sy)
-		- setStart(sx, sy)
-		- init(sx, sy)
-		- getPixelIndex(x, y)
-		- getDirtyX()
-		- setDirtyX(dx)
-		- getDirtyY()
-		- setDirtyY(dy)
-		- setDirty(dx, dy)
-		- getDirtyWidth()
-		- setDirtyWidth(dw)
-		- getDirtyHeight()
-		- setDirtyHeight(dh)
-
 ### Matrix
 
 - prototype
@@ -776,6 +726,10 @@
 									- getAngle()
 									- ratioInRange()
 
+					- Pin
+
+						- new Pin(ctx, sx, sy, anchorAngle, closed, headLength, headAngle, cx, cy)
+
 			- Text
 
 				- new Text(ctx, sx, sy, text, cx, cy)
@@ -912,3 +866,53 @@
 									- getStartAngle()
 									- getEndAngle()
 									- getAnticlockwise()
+
+### ImageData
+
+- prototype
+
+	- getImageData()
+	- setImageData(sx, sy, sw_or_imageData, sh_or_sw)
+	- toDataURL(type)
+	- saveAsImage(filename, type)
+	- resetPut()
+	- put()
+	- isPointInPath(x, y)
+	- isPointInStroke(x, y)
+	- forEach(callback, context, x, y, w, h)
+	- mosaic(t, x, y, w, h)
+	- transparencyDisposal(ratio, x, y, w, h)
+	- reverseColor(x, y, w, h)
+	- greyProcessing(x, y, w, h)
+	- blackWhite(ratio, x, y, w, h)
+	- relief()
+	- sunGlass()
+	- frostedGlass(t)
+	- getter/setter
+
+		- inherit Rect
+
+			- getWidth()
+			- getHeight()
+			- getStartX()
+			- getStartY()
+			- getLeft()
+			- getTop()
+			- getRight()
+			- getBottom()
+
+		- getData()
+		- setStartX(sx)
+		- setStartY(sy)
+		- setStart(sx, sy)
+		- init(sx, sy)
+		- getPixelIndex(x, y)
+		- getDirtyX()
+		- setDirtyX(dx)
+		- getDirtyY()
+		- setDirtyY(dy)
+		- setDirty(dx, dy)
+		- getDirtyWidth()
+		- setDirtyWidth(dw)
+		- getDirtyHeight()
+		- setDirtyHeight(dh)
