@@ -379,12 +379,9 @@
 
 ### Animate
 
-- static
-
-	- mixin(object, $raf, duration)
-
 - prototype
 
+	- bindTo(object, duration, interval)
 	- init()
 	- start()
 	- pause()
@@ -397,7 +394,12 @@
 - subclass
 
 	- AnimateITV
+
+		- new AnimateITV(func, duration, interval)
+
 	- AnimateRAF
+
+		- new AnimateRAF(func, duration, interval)
 
 ### Canvas
 
