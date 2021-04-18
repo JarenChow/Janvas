@@ -381,7 +381,6 @@
 
 - prototype
 
-	- bindTo(object, duration, interval)
 	- init()
 	- start()
 	- pause()
@@ -400,6 +399,22 @@
 	- AnimateRAF
 
 		- new AnimateRAF(func, duration, interval)
+
+### Animation
+
+- new Animation(animate, duration, interval, beforeUpdate, update, afterUpdate)
+- prototype
+
+	- $start()
+	- $reverse()
+	- $pause()
+	- $resume()
+	- $stop(force, toEnd)
+	- $isRunning()
+	- $isStopped()
+	- $isPaused()
+	- $isForward()
+	- $update(interval)
 
 ### Canvas
 
