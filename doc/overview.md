@@ -402,19 +402,19 @@
 
 ### Animation
 
-- new Animation(animate, duration, interval, beforeUpdate, update, afterUpdate)
+- new Animation(animate, duration, interval, animationstart, animationiteration, animationend)
 - prototype
 
-	- $start()
-	- $reverse()
-	- $pause()
-	- $resume()
-	- $stop(force, toEnd)
-	- $isRunning()
-	- $isStopped()
-	- $isPaused()
-	- $isForward()
-	- $update(interval)
+	- start()
+	- reverse()
+	- pause()
+	- resume()
+	- stop(force, toEnd)
+	- isRunning()
+	- isStopped()
+	- isPaused()
+	- isForward()
+	- update(interval)
 
 ### Canvas
 
