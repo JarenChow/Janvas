@@ -402,7 +402,7 @@
 
 ### Animation
 
-- new Animation(animate, duration, interval, onanimationstart, onanimationiteration, onanimationend)
+- new Animation(animate, duration, interval, beforeUpdate, onUpdate, afterUpdate)
 - prototype
 
 	- start()
