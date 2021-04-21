@@ -696,56 +696,30 @@
 								- getAngle()
 								- ratioInRange()
 
-			- ArrowHead
+			- Triangle
 
-				- new ArrowHead(ctx, sx, sy, anchorAngle, closed, headLength, headAngle, cx, cy)
+				- new Triangle(ctx, sx, sy, length, angle, rotation, closed, cx, cy)
 				- prototype
 
 					- getter/setter
 
-						- getAnchorAngle()
-						- setAnchorAngle(anchorAngle)
+						- getLength()
+						- setLenght(length)
+						- getAngle()
+						- setAngle(angle)
+						- inherit Ellipse
+
+							- getRotation()
+							- setRotation(rotation)
+
 						- getClosed()
 						- setClosed(closed)
-						- getHeadLength()
-						- setHeadLength(headLength)
-						- getHeadAngle()
-						- setHeadAngle(headAngle)
 
 				- subclass
 
-					- Arrow
-
-						- new Arrow(ctx, sx, sy, ex, ey, ax, ay, el, closed, headLength, headAngle, cx, cy)
-						- prototype
-
-							- getter/setter
-
-								- inherit Line
-
-									- getEndX()
-									- setEndX(ex)
-									- getEndY()
-									- setEndY(ey)
-									- setEnd(ex, ey)
-
-								- inherit Edge
-
-									- getAnchorX()
-									- setAnchorX(ax)
-									- getAnchorY()
-									- setAnchorY(ay)
-									- setAnchor(ax, ay)
-									- getEmptyLength()
-									- setEmptyLength(el)
-									- getTargetX()
-									- getTargetY()
-									- getAngle()
-									- ratioInRange()
-
 					- Pin
 
-						- new Pin(ctx, sx, sy, anchorAngle, closed, headLength, headAngle, cx, cy)
+						- new Pin(ctx, sx, sy, length, angle, rotation, closed, cx, cy)
 
 			- Text
 
@@ -888,8 +862,6 @@
 
 - prototype
 
-	- getImageData()
-	- setImageData(sx, sy, sw_or_imageData, sh_or_sw)
 	- toDataURL(type)
 	- saveAsImage(filename, type)
 	- resetPut()
@@ -907,6 +879,9 @@
 	- frostedGlass(t)
 	- getter/setter
 
+		- getImageData()
+		- setImageData(sx, sy, sw_or_imageData, sh_or_sw)
+		- getData()
 		- inherit Rect
 
 			- getWidth()
@@ -918,7 +893,6 @@
 			- getRight()
 			- getBottom()
 
-		- getData()
 		- setStartX(sx)
 		- setStartY(sy)
 		- setStart(sx, sy)
