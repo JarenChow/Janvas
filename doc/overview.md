@@ -743,19 +743,21 @@
 
 				- prototype
 
-					- insert(x, y)
-					- insertAt(x, y, index)
+					- append(x, y)
+					- insert(index, x, y)
 					- delete(index)
-					- update(x, y, index)
-					- select(index, offset)
+					- update(index, x, y)
+					- peek(index, offset)
 					- getter/setter
 
 						- getProcessedPoints()
 						- getTransformedPoints()
 						- getPoints()
 						- setPoints(points)
-						- getLength()
-						- setLength(length)
+						- inherit Triangle
+
+							- getLength()
+							- setLength(length)
 
 				- subclass
 
