@@ -381,7 +381,6 @@
 
 - prototype
 
-	- init()
 	- start()
 	- pause()
 	- resume()
@@ -409,12 +408,15 @@
 	- reverse()
 	- pause()
 	- resume()
-	- stop(force, toEnd)
+	- stop(toEnd)
+	- inProgress()
 	- isRunning()
 	- isStopped()
 	- isPaused()
 	- isForward()
+	- beforeUpdate()
 	- update(interval)
+	- afterUpdate(forward)
 
 ### Canvas
 
