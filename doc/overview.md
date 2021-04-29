@@ -74,7 +74,6 @@
 	- 继承
 
 		- inheritPrototype(subType)
-		- defineConstructor(subType)
 
 	- 文本
 
@@ -121,7 +120,7 @@
 
 	- arc(x1, y1, r1, x2, y2, r2)
 	- rect(x1, y1, x2, y2, x3, y3, x4, y4)
-	- arcRect(x, y, r, x1, y1, x2, y2, cx, cy, cos, sin)
+	- arcRect(x, y, r, x1, y1, x2, y2, ox, oy, cos, sin)
 	- light(x, y, vx, vy, x1, y1, x2, y2)
 	- sepAxis(points1, points2)
 	- sepAxisArc(points, x, y, r)
@@ -387,6 +386,7 @@
 	- stop()
 	- isRunning()
 	- isStopped()
+	- isPaused()
 	- inProgress()
 
 - subclass
@@ -495,7 +495,7 @@
 
 - prototype
 
-	- init(sx, sy, cx, cy)
+	- init(sx, sy, ox, oy)
 	- fill(fillRule)
 	- stroke()
 	- fillStroke(fillRule)
@@ -514,11 +514,13 @@
 		- getStartY()
 		- setStartY(sy)
 		- setStart(sx, sy)
-		- getCenterX()
-		- setCenterX(cx)
-		- getCenterY()
-		- setCenterY(cy)
-		- setCenter(cx, cy)
+		- getOriginX()
+		- setOriginX(ox)
+		- getOriginY()
+		- setOriginY(oy)
+		- setOrigin(ox, oy)
+		- getVectorX()
+		- getVectorY()
 		- getMatrix()
 		- setMatrix(mat)
 
@@ -537,7 +539,7 @@
 
 			- Rect
 
-				- new Rect(ctx, sx, sy, width, height, cx, cy)
+				- new Rect(ctx, sx, sy, width, height, ox, oy)
 				- prorotype
 
 					- getter/setter
@@ -555,7 +557,7 @@
 
 					- RoundRect
 
-						- new RoundRect(ctx, sx, sy, width, height, radius, cx, cy)
+						- new RoundRect(ctx, sx, sy, width, height, radius, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -567,7 +569,7 @@
 
 					- Image
 
-						- new Image(ctx, sx, sy, src, cx, cy, width, height, cropX, cropY, cropWidth, cropHeight)
+						- new Image(ctx, sx, sy, src, ox, oy, width, height, cropX, cropY, cropWidth, cropHeight)
 						- prototype
 
 							- toImageData()
@@ -594,7 +596,7 @@
 
 			- Arc
 
-				- new Arc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, cx, cy)
+				- new Arc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
 				- prototype
 
 					- getter/setter
@@ -612,11 +614,11 @@
 
 					- Sector
 
-						- new Sector(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, cx, cy)
+						- new Sector(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
 
 					- Ellipse
 
-						- new Ellipse(ctx, sx, sy, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise, cx, cy)
+						- new Ellipse(ctx, sx, sy, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -631,7 +633,7 @@
 
 					- RegularPolygon
 
-						- new RegularPolygon(ctx, sx, sy, radius, sides, cx, cy)
+						- new RegularPolygon(ctx, sx, sy, radius, sides, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -643,11 +645,11 @@
 
 							- RegularStar
 
-								- new RegularStar(ctx, sx, sy, radius, sides, cx, cy)
+								- new RegularStar(ctx, sx, sy, radius, sides, ox, oy)
 
 			- Line
 
-				- new Line(ctx, sx, sy, ex, ey, cx, cy)
+				- new Line(ctx, sx, sy, ex, ey, ox, oy)
 				- prototype
 
 					- getter/setter
@@ -662,7 +664,7 @@
 
 					- BezierLine
 
-						- new BezierLine(ctx, sx, sy, ex, ey, cp1x, cp1y, cp2x, cp2y, cx, cy)
+						- new BezierLine(ctx, sx, sy, ex, ey, cp1x, cp1y, cp2x, cp2y, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -680,7 +682,7 @@
 
 					- Edge
 
-						- new Edge(ctx, sx, sy, ex, ey, ax, ay, el, cx, cy)
+						- new Edge(ctx, sx, sy, ex, ey, ax, ay, el, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -700,7 +702,7 @@
 
 			- Triangle
 
-				- new Triangle(ctx, sx, sy, length, angle, rotation, closed, cx, cy)
+				- new Triangle(ctx, sx, sy, length, angle, rotation, closed, ox, oy)
 				- prototype
 
 					- getter/setter
@@ -721,11 +723,11 @@
 
 					- Pin
 
-						- new Pin(ctx, sx, sy, length, angle, rotation, closed, cx, cy)
+						- new Pin(ctx, sx, sy, length, angle, rotation, closed, ox, oy)
 
 			- Text
 
-				- new Text(ctx, sx, sy, text, cx, cy)
+				- new Text(ctx, sx, sy, text, ox, oy)
 				- prototype
 
 					- getter/setter
@@ -752,7 +754,6 @@
 					- peek(index, offset)
 					- getter/setter
 
-						- getProcessedPoints()
 						- getTransformedPoints()
 						- getPoints()
 						- setPoints(points)
@@ -765,39 +766,39 @@
 
 					- Polyline
 
-						- new Polyline(ctx, sx, sy, points, length, cx, cy)
+						- new Polyline(ctx, sx, sy, points, length, ox, oy)
 						- subclass
+
+							- Polygon
+
+								- new Polygon(ctx, sx, sy, points, length, ox, oy)
+								- subclass
+
+									- PolyRect
+
+										- new PolyRect(ctx, sx, sy, points, length, ox, oy)
+
+									- PolyArc
+
+										- new PolyArc(ctx, sx, sy, points, length, ox, oy)
+
+									- SuperEllipse
+
+										- new SuperEllipse(ctx, sx, sy, points, length, ox, oy)
+										- prototype
+
+											- getter/setter
+
+												- getExponent()
+												- setExponent(exponent)
 
 							- Bezier
 
-								- new Bezier(ctx, sx, sy, points, length, cx, cy)
-
-					- Polygon
-
-						- new Polygon(ctx, sx, sy, points, length, cx, cy)
-						- subclass
-
-							- PolyRect
-
-								- new PolyRect(ctx, sx, sy, points, length, cx, cy)
-
-							- PolyArc
-
-								- new PolyArc(ctx, sx, sy, points, length, cx, cy)
-
-							- SuperEllipse
-
-								- new SuperEllipse(ctx, sx, sy, points, length, cx, cy)
-								- prototype
-
-									- getter/setter
-
-										- getExponent()
-										- setExponent(exponent)
+								- new Bezier(ctx, sx, sy, points, length, ox, oy)
 
 					- SmoothLine
 
-						- new SmoothLine(ctx, sx, sy, points, length, cx, cy)
+						- new SmoothLine(ctx, sx, sy, points, length, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -807,7 +808,7 @@
 
 					- Dots
 
-						- new Dots(ctx, sx, sy, points, length, cx, cy)
+						- new Dots(ctx, sx, sy, points, length, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -819,7 +820,7 @@
 
 			- FixedShape
 
-				- new FixedShape(ctx, sx, sy, path, cx, cy)
+				- new FixedShape(ctx, sx, sy, path, ox, oy)
 				- prototype
 
 					- addPath(path)
@@ -834,7 +835,7 @@
 
 					- FixedRect
 
-						- new FixedRect(ctx, sx, sy, width, height, cx, cy)
+						- new FixedRect(ctx, sx, sy, width, height, ox, oy)
 						- prototype
 
 							- getter/setter
@@ -850,7 +851,7 @@
 
 					- FixedArc
 
-						- new FixedArc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, cx, cy)
+						- new FixedArc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
 						- prototype
 
 							- getter/setter
