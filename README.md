@@ -32,14 +32,14 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## [Hello World](https://jarenchow.github.io/JanvasExamples/html/hello_world.html)
 
-- 与既有 Canvas 项目整合
+- 与既有 Canvas 项目整合（功能受限）
   1. `<canvas></canvas>`
   2. `<script src="https://cdn.jsdelivr.net/npm/janvas"></script>`
   3. `var ctx = document.querySelector("canvas").getContext("2d");`
   4. `var text = new janvas.Text(ctx, 50, 50, "HelloWorld"); // new 一个文本`
   5. `text.fill(); // 文本绘制`
 
-- 使用 janvas.Canvas 开发
+- 使用 janvas.Canvas 开发（全部功能）
 
 ```html
 <body>
@@ -98,11 +98,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
    - 停止动画并移除引用
    - 移除 `<canvas>` 元素
    - `resize/intersection unobserve`
-   - 删除 obj 中所有键值对
-
-## 特殊说明
-
-如果同时使用原生 Canvas API 开发，需在 **janvas** 代码的前后使用 `ctx.save()` 和 `ctx.restore()` 来确保变换和样式的还原（**janvas** 绘制过程中不会使用 save/restore 等低效率的方法。）
+   - `obj.ownProperties = void (0)`
 
 ## License
 

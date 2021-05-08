@@ -427,6 +427,7 @@
 		- container
 		- duration
 		- interval
+		- dpr
 		- props
 		- components
 		- methods
@@ -491,7 +492,7 @@
 
 ## view
 
-### BasicShape
+### Shape
 
 - prototype
 
@@ -507,6 +508,7 @@
 	- isPointInStroke(x, y)
 	- isPointInPath$1(x, y)
 	- isPointInStroke$1(x, y)
+	- process()
 	- getter/setter
 
 		- getStartX()
@@ -523,345 +525,336 @@
 		- getVectorY()
 		- getMatrix()
 		- setMatrix(mat)
+		- getStyle()
+		- setStyle(sty)
 
 - subclass
 
-	- Shape
+	- Rect
 
+		- new Rect(ctx, sx, sy, width, height, ox, oy)
+		- prorotype
+
+			- getter/setter
+
+				- getWidth()
+				- setWidth(width)
+				- getHeight()
+				- setHeight(height)
+				- getLeft()
+				- getTop()
+				- getRight()
+				- getBottom()
+
+		- subclass
+
+			- RoundRect
+
+				- new RoundRect(ctx, sx, sy, width, height, radius, ox, oy)
+				- prototype
+
+					- getter/setter
+
+						- inherit Arc
+
+							- getRadius()
+							- setRadius(radius)
+
+			- Image
+
+				- new Image(ctx, sx, sy, src, ox, oy, width, height, cropX, cropY, cropWidth, cropHeight)
+				- prototype
+
+					- toImageData()
+					- isComplete()
+					- resetDraw()
+					- draw()
+					- getter/setter
+
+						- getSrc()
+						- setSrc(src)
+						- getImage()
+						- setImage(image)
+						- getAdjustSize()
+						- setAdjustSize(adjustSize)
+						- getCropX()
+						- setCropX(cropX)
+						- getCropY()
+						- setCropY(cropY)
+						- setCrop(cropX, cropY)
+						- getCropWidth()
+						- setCropWidth(cropWidth)
+						- getCropHeight()
+						- setCropHeight(cropHeight)
+
+	- Arc
+
+		- new Arc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
 		- prototype
 
 			- getter/setter
 
-				- getStyle()
-				- setStyle(sty)
+				- getRadius()
+				- setRadius(radius)
+				- getStartAngle()
+				- setStartAngle(startAngle)
+				- getEndAngle()
+				- setEndAngle(endAngle)
+				- getAnticlockwise()
+				- setAnticlockwise(anticlockwise)
 
 		- subclass
 
-			- Rect
+			- Sector
 
-				- new Rect(ctx, sx, sy, width, height, ox, oy)
-				- prorotype
+				- new Sector(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
 
-					- getter/setter
+			- Ellipse
 
-						- getWidth()
-						- setWidth(width)
-						- getHeight()
-						- setHeight(height)
-						- getLeft()
-						- getTop()
-						- getRight()
-						- getBottom()
-
-				- subclass
-
-					- RoundRect
-
-						- new RoundRect(ctx, sx, sy, width, height, radius, ox, oy)
-						- prototype
-
-							- getter/setter
-
-								- inherit Arc
-
-									- getRadius()
-									- setRadius(radius)
-
-					- Image
-
-						- new Image(ctx, sx, sy, src, ox, oy, width, height, cropX, cropY, cropWidth, cropHeight)
-						- prototype
-
-							- toImageData()
-							- isComplete()
-							- resetDraw()
-							- draw()
-							- getter/setter
-
-								- getSrc()
-								- setSrc(src)
-								- getImage()
-								- setImage(image)
-								- getAdjustSize()
-								- setAdjustSize(adjustSize)
-								- getCropX()
-								- setCropX(cropX)
-								- getCropY()
-								- setCropY(cropY)
-								- setCrop(cropX, cropY)
-								- getCropWidth()
-								- setCropWidth(cropWidth)
-								- getCropHeight()
-								- setCropHeight(cropHeight)
-
-			- Arc
-
-				- new Arc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
+				- new Ellipse(ctx, sx, sy, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise, ox, oy)
 				- prototype
 
 					- getter/setter
 
-						- getRadius()
-						- setRadius(radius)
-						- getStartAngle()
-						- setStartAngle(startAngle)
-						- getEndAngle()
-						- setEndAngle(endAngle)
-						- getAnticlockwise()
-						- setAnticlockwise(anticlockwise)
+						- getRadiusX()
+						- setRadiusX(radiusX)
+						- getRadiusY()
+						- setRadiusY(radiusY)
+						- setRadius(radiusX, radiusY)
+						- getRotation()
+						- setRotation(rotation)
 
-				- subclass
+			- RegularPolygon
 
-					- Sector
-
-						- new Sector(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
-
-					- Ellipse
-
-						- new Ellipse(ctx, sx, sy, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise, ox, oy)
-						- prototype
-
-							- getter/setter
-
-								- getRadiusX()
-								- setRadiusX(radiusX)
-								- getRadiusY()
-								- setRadiusY(radiusY)
-								- setRadius(radiusX, radiusY)
-								- getRotation()
-								- setRotation(rotation)
-
-					- RegularPolygon
-
-						- new RegularPolygon(ctx, sx, sy, radius, sides, ox, oy)
-						- prototype
-
-							- getter/setter
-
-								- getSides()
-								- setSides(sides)
-
-						- subclass
-
-							- RegularStar
-
-								- new RegularStar(ctx, sx, sy, radius, sides, ox, oy)
-
-			- Line
-
-				- new Line(ctx, sx, sy, ex, ey, ox, oy)
+				- new RegularPolygon(ctx, sx, sy, radius, sides, ox, oy)
 				- prototype
 
 					- getter/setter
 
-						- getEndX()
-						- setEndX(ex)
-						- getEndY()
-						- setEndY(ey)
-						- setEnd(ex, ey)
+						- getSides()
+						- setSides(sides)
 
 				- subclass
 
-					- BezierLine
+					- RegularStar
 
-						- new BezierLine(ctx, sx, sy, ex, ey, cp1x, cp1y, cp2x, cp2y, ox, oy)
-						- prototype
+						- new RegularStar(ctx, sx, sy, radius, sides, ox, oy)
 
-							- getter/setter
+	- Line
 
-								- getControlPoint1X()
-								- setControlPoint1X(cp1x)
-								- getControlPoint1Y()
-								- setControlPoint1Y(cp1y)
-								- setControlPoint1(cp1x, cp1y)
-								- getControlPoint2X()
-								- setControlPoint2X(cp2x)
-								- getControlPoint2Y()
-								- setControlPoint2Y(cp2y)
-								- setControlPoint2(cp2x, cp2y)
+		- new Line(ctx, sx, sy, ex, ey, ox, oy)
+		- prototype
 
-					- Edge
+			- getter/setter
 
-						- new Edge(ctx, sx, sy, ex, ey, ax, ay, el, ox, oy)
-						- prototype
+				- getEndX()
+				- setEndX(ex)
+				- getEndY()
+				- setEndY(ey)
+				- setEnd(ex, ey)
 
-							- getter/setter
+		- subclass
 
-								- getAnchorX()
-								- setAnchorX(ax)
-								- getAnchorY()
-								- setAnchorY(ay)
-								- setAnchor(ax, ay)
-								- getEmptyLength()
-								- setEmptyLength(el)
-								- getTargetX()
-								- getTargetY()
-								- getAnchorAngle()
-								- getAngle()
-								- ratioInRange()
+			- BezierLine
 
-			- Triangle
-
-				- new Triangle(ctx, sx, sy, length, angle, rotation, closed, ox, oy)
+				- new BezierLine(ctx, sx, sy, ex, ey, cp1x, cp1y, cp2x, cp2y, ox, oy)
 				- prototype
 
 					- getter/setter
 
-						- getLength()
-						- setLenght(length)
+						- getControlPoint1X()
+						- setControlPoint1X(cp1x)
+						- getControlPoint1Y()
+						- setControlPoint1Y(cp1y)
+						- setControlPoint1(cp1x, cp1y)
+						- getControlPoint2X()
+						- setControlPoint2X(cp2x)
+						- getControlPoint2Y()
+						- setControlPoint2Y(cp2y)
+						- setControlPoint2(cp2x, cp2y)
+
+			- Edge
+
+				- new Edge(ctx, sx, sy, ex, ey, ax, ay, el, ox, oy)
+				- prototype
+
+					- getter/setter
+
+						- getAnchorX()
+						- setAnchorX(ax)
+						- getAnchorY()
+						- setAnchorY(ay)
+						- setAnchor(ax, ay)
+						- getEmptyLength()
+						- setEmptyLength(el)
+						- getTargetX()
+						- getTargetY()
+						- getAnchorAngle()
 						- getAngle()
-						- setAngle(angle)
-						- inherit Ellipse
+						- ratioInRange()
 
-							- getRotation()
-							- setRotation(rotation)
+	- Triangle
 
-						- getClosed()
-						- setClosed(closed)
+		- new Triangle(ctx, sx, sy, length, angle, rotation, closed, ox, oy)
+		- prototype
 
+			- getter/setter
+
+				- getLength()
+				- setLenght(length)
+				- getAngle()
+				- setAngle(angle)
+				- inherit Ellipse
+
+					- getRotation()
+					- setRotation(rotation)
+
+				- getClosed()
+				- setClosed(closed)
+
+		- subclass
+
+			- Pin
+
+				- new Pin(ctx, sx, sy, length, angle, rotation, closed, ox, oy)
+
+	- Text
+
+		- new Text(ctx, sx, sy, text, ox, oy)
+		- prototype
+
+			- getter/setter
+
+				- getText()
+				- setText(text)
+				- getMetrics()
+				- getWidth()
+				- getActualBoundingBoxWidth()
+				- getActualBoundingBoxHeight()
+				- getLeft()
+				- getRight()
+				- getTop()
+				- getBottom()
+
+	- DotShape
+
+		- prototype
+
+			- append(x, y)
+			- insert(index, x, y)
+			- delete(index)
+			- update(index, x, y)
+			- peek(index, offset)
+			- getter/setter
+
+				- getTransformedPoints()
+				- getPoints()
+				- setPoints(points)
+				- inherit Triangle
+
+					- getLength()
+					- setLength(length)
+
+		- subclass
+
+			- Polyline
+
+				- new Polyline(ctx, sx, sy, points, length, ox, oy)
 				- subclass
 
-					- Pin
+					- Polygon
 
-						- new Pin(ctx, sx, sy, length, angle, rotation, closed, ox, oy)
-
-			- Text
-
-				- new Text(ctx, sx, sy, text, ox, oy)
-				- prototype
-
-					- getter/setter
-
-						- getText()
-						- setText(text)
-						- getMetrics()
-						- getWidth()
-						- getActualBoundingBoxWidth()
-						- getActualBoundingBoxHeight()
-						- getLeft()
-						- getRight()
-						- getTop()
-						- getBottom()
-
-			- DotShape
-
-				- prototype
-
-					- append(x, y)
-					- insert(index, x, y)
-					- delete(index)
-					- update(index, x, y)
-					- peek(index, offset)
-					- getter/setter
-
-						- getTransformedPoints()
-						- getPoints()
-						- setPoints(points)
-						- inherit Triangle
-
-							- getLength()
-							- setLength(length)
-
-				- subclass
-
-					- Polyline
-
-						- new Polyline(ctx, sx, sy, points, length, ox, oy)
+						- new Polygon(ctx, sx, sy, points, length, ox, oy)
 						- subclass
 
-							- Polygon
+							- PolyRect
 
-								- new Polygon(ctx, sx, sy, points, length, ox, oy)
-								- subclass
+								- new PolyRect(ctx, sx, sy, points, length, ox, oy)
 
-									- PolyRect
+							- PolyArc
 
-										- new PolyRect(ctx, sx, sy, points, length, ox, oy)
+								- new PolyArc(ctx, sx, sy, points, length, ox, oy)
 
-									- PolyArc
+							- SuperEllipse
 
-										- new PolyArc(ctx, sx, sy, points, length, ox, oy)
+								- new SuperEllipse(ctx, sx, sy, points, length, ox, oy)
+								- prototype
 
-									- SuperEllipse
+									- getter/setter
 
-										- new SuperEllipse(ctx, sx, sy, points, length, ox, oy)
-										- prototype
+										- getExponent()
+										- setExponent(exponent)
 
-											- getter/setter
+					- Bezier
 
-												- getExponent()
-												- setExponent(exponent)
+						- new Bezier(ctx, sx, sy, points, length, ox, oy)
 
-							- Bezier
+			- SmoothLine
 
-								- new Bezier(ctx, sx, sy, points, length, ox, oy)
-
-					- SmoothLine
-
-						- new SmoothLine(ctx, sx, sy, points, length, ox, oy)
-						- prototype
-
-							- getter/setter
-
-								- getTension()
-								- setTension(tension)
-
-					- Dots
-
-						- new Dots(ctx, sx, sy, points, length, ox, oy)
-						- prototype
-
-							- getter/setter
-
-								- inherit Arc
-
-									- getRadius()
-									- setRadius(radius)
-
-			- FixedShape
-
-				- new FixedShape(ctx, sx, sy, path, ox, oy)
+				- new SmoothLine(ctx, sx, sy, points, length, ox, oy)
 				- prototype
 
-					- addPath(path)
-					- addFixedShape(fixedShape)
 					- getter/setter
 
-						- getPath()
-						- setPath(path)
-						- getOffsetPath()
+						- getTension()
+						- setTension(tension)
 
-				- subclass
+			- Dots
 
-					- FixedRect
+				- new Dots(ctx, sx, sy, points, length, ox, oy)
+				- prototype
 
-						- new FixedRect(ctx, sx, sy, width, height, ox, oy)
-						- prototype
+					- getter/setter
 
-							- getter/setter
+						- inherit Arc
 
-								- inherit Rect
+							- getRadius()
+							- setRadius(radius)
 
-									- getWidth()
-									- getHeight()
-									- getLeft()
-									- getTop()
-									- getRight()
-									- getBottom()
+	- FixedShape
 
-					- FixedArc
+		- new FixedShape(ctx, sx, sy, path, ox, oy)
+		- prototype
 
-						- new FixedArc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
-						- prototype
+			- addPath(path)
+			- addFixedShape(fixedShape)
+			- getter/setter
 
-							- getter/setter
+				- getPath()
+				- setPath(path)
+				- getOffsetPath()
 
-								- inherit Arc
+		- subclass
 
-									- getRadius()
-									- getStartAngle()
-									- getEndAngle()
-									- getAnticlockwise()
+			- FixedRect
+
+				- new FixedRect(ctx, sx, sy, width, height, ox, oy)
+				- prototype
+
+					- getter/setter
+
+						- inherit Rect
+
+							- getWidth()
+							- getHeight()
+							- getLeft()
+							- getTop()
+							- getRight()
+							- getBottom()
+
+			- FixedArc
+
+				- new FixedArc(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
+				- prototype
+
+					- getter/setter
+
+						- inherit Arc
+
+							- getRadius()
+							- getStartAngle()
+							- getEndAngle()
+							- getAnticlockwise()
 
 ### ImageData
 
