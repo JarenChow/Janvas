@@ -209,6 +209,7 @@
 	- modulus()
 	- slope()
 	- radian()
+	- manhattan(point)
 	- dotProduct(point)
 	- crossProduct(point)
 	- theta(point)
