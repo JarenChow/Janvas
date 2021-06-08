@@ -314,6 +314,7 @@
 				- setShadowOffsetX(shadowOffsetX)
 				- getShadowOffsetY()
 				- setShadowOffsetY(shadowOffsetY)
+				- setShadowOffset(shadowOffsetX, shadowOffsetY)
 
 		- subclass
 
@@ -549,6 +550,16 @@
 
 		- subclass
 
+			- Grid
+
+				- new Grid(ctx, sx, sy, width, height, gap, ox, oy)
+				- prototype
+
+					- getter/setter
+
+						- getGap()
+						- setGap(gap)
+
 			- RoundRect
 
 				- new RoundRect(ctx, sx, sy, width, height, radius, ox, oy)
@@ -609,6 +620,18 @@
 			- Sector
 
 				- new Sector(ctx, sx, sy, radius, startAngle, endAngle, anticlockwise, ox, oy)
+
+			- Ring
+
+				- new Ring(ctx, sx, sy, outerRadius, innerRadius, startAngle, endAngle, anticlockwise, ox, oy)
+				- prototype
+
+					- getter/setter
+
+						- getOuterRadius()
+						- setOuterRadius(outerRadius)
+						- getInnerRadius()
+						- setInnerRadius(innerRadius)
 
 			- Ellipse
 

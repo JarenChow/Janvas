@@ -48,20 +48,35 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 <script src="https://cdn.jsdelivr.net/npm/janvas"></script>
 <script>
-  // 在 div 容器 中央绘制 "HelloWorld"
+  // 在 div 容器 中央绘制 "HelloWorld"，以下内容为核心特性
   var helloWorld = new janvas.Canvas({
     container: "#app", // 找到容器 id
     methods: {
       init: function () { // 初始化，此回调仅会调用一次
         this.text = new janvas.Text(this.$ctx, 0, 0, "HelloWorld"); // new 一个 Text
-        this.text.getStyle().setFont("small-caps bold 128px courier")
-          .setTextAlign("center").setTextBaseline("middle"); // 给 Text 设置样式
+        this.text.getStyle().setFont("small-caps bold 128px courier") // 设置字体
+          .setTextAlign("center").setTextBaseline("middle") // 设置文字对齐
+          .setShadowOffsetY(32).setShadowColor("dimgrey").setShadowBlur(5); // 设置阴影
+        this.text.getMatrix().setSkewX(Math.PI / 6).setAngle(-Math.PI / 6); // 设置变形
+
+        this.grid = new janvas.Grid(this.$ctx, 0, 0, 0, 0, 50); // new 一个网格
+        this.grid.getStyle().setAlpha(0.4); // 给网格设置透明度 0.4
+        this.grid.getMatrix().setSkewX(Math.PI / 6).setAngle(-Math.PI / 6); // 变形
       },
       resize: function () { // 在每次 <canvas> 大小发生改变时回调
-        this.text.setStart(this.$width / 2, this.$height / 2); // 置于中间
+        var w = this.$width, h = this.$height, x = w / 2, y = h / 2; // 中心点
+        this.text.init(x, y, x, y); // 绘制起点与绘制原点均置于屏幕中央
+        this.grid.init(0, 0, x, y) // 绘制起点 0, 0，绘制原点置于屏幕中央
+          .setWidth(w).setHeight(h); // 为网格设置宽高
       },
       draw: function () { // 在此回调时
+        this.grid.stroke(); // 网格率先绘制
         this.text.fill(); // 让 Text 进行绘制
+      }
+    },
+    events: {
+      mousemove: function (ev) { // 为 <canvas> 注册事件监听回调
+        console.log(this.text.isPointInPath(ev.$x, ev.$y)); // 打印坐标点是否处于图形内部
       }
     }
   });
@@ -73,6 +88,8 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 ## Janvas 示例
 
 详见 [JanvasExamples](https://github.com/JarenChow/JanvasExamples)
+
+其他一些小示例写在 [CSDN](https://blog.csdn.net/M3oM3oChong) 和 [CodePen](https://codepen.io/jarenchow)
 
 ## 源代码
 

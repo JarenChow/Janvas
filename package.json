@@ -1,6 +1,6 @@
 {
   "name": "janvas",
-  "version": "2.9.5",
+  "version": "2.9.6",
   "description": "A lightweight&simple 2D javascript library based on HTML5 Canvas.",
   "main": "dist/janvas.min.js",
   "scripts": {
