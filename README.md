@@ -21,7 +21,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 1. 简单，要什么就 new 出来；
 2. 高效，比原生 API 开发更直观、渲染效率也更高；
-3. 易用，图形变形 shape.getMatrix().set...()，样式 shape.getStyle().set...()；
+3. 易用，图形变形 shape.getMatrix()，样式 shape.getStyle()；
 4. 强大，原生封装绘制、SVG Path 支持、坐标点等等计算的支持；
 5. 兼容，只需一个具有宽高的容器 div，不管它在哪里 **janvas** 都能精准地填充它并适配高分屏。
 
@@ -99,9 +99,7 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 ## 总览
 
-[overview.md](./doc/overview.md)
-
-## 文档（待写）
+[Janvas.jmind](./doc/README.md)
 
 ### janvas.Canvas
 
@@ -109,13 +107,12 @@ A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
 1. 创建：`var obj = new janvas.Canvas(options);`
 2. 周期：![lifecircle](./doc/lifecircle.png)
-3. 销毁：`obj.$destroy();`，框架将：
-   - 移除所有事件监听器
-   - 删除所有事件监听器
-   - 停止动画并移除引用
+3. 销毁：`obj.$destroy();`，将发生：
+   - 移除事件监听器
+   - 停止动画
    - 移除 `<canvas>` 元素
    - `resize/intersection unobserve`
-   - `obj.ownProperties = void (0)`
+   - 移除自身属性引用
 
 ## License
 
