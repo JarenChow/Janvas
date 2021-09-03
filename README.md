@@ -1,29 +1,10 @@
-# Janvas
+# Janvas\[暂停更新\]
 
 A lightweight&amp;simple 2D javascript library based on HTML5 Canvas.
 
-一款轻量、简单的基于 HTML5 Canvas 2d 绘图上下文的 JavaScript 绘图库，不仅便于 *拓展*，拥有极佳的 *灵活度* 和超越原生 canvas API 开发的 *性能*，更是 *渐进迭代式* 开发的绝佳选择。
+一款轻量、简单的基于 HTML5 Canvas 2d 绘图上下文的 JavaScript 绘图库。
 
-总之，**janvas** 库只做了它该做的基础建设，在此基础上&darr;
-
-## Janvas 能做
-
-1. 高度定制化图表
-2. 可视化大屏
-3. 特效
-4. 物理模拟
-5. 数学可视化
-6. 游戏
-7. 图像处理
-8. \.\.\.
-
-## Janvas 的特点
-
-1. 简单，要什么就 new 出来；
-2. 高效，比原生 API 开发更直观、渲染效率也更高；
-3. 易用，图形变形 shape.getMatrix()，样式 shape.getStyle()；
-4. 强大，原生封装绘制、SVG Path 支持、坐标点等等计算的支持；
-5. 兼容，只需一个具有宽高的容器 div，不管它在哪里 **janvas** 都能精准地填充它并适配高分屏。
+它不是框架，它只做了它该做的基础建设。
 
 ## 安装
 
